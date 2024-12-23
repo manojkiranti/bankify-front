@@ -1,0 +1,55 @@
+.card-active{
+    background-color: #F8FAFC;
+    border-color: $primary!important;
+}
+.service{
+    display: flex;
+    width: 120px;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    max-width: 130px;
+    height: 130px;
+    margin-bottom: 1rem;
+    // border: 1px solid rgba(22, 22, 22, 0.08);
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+    border-radius: 20px;
+    // background: rgb(229 229 229 / 40%);
+    border: 1px solid gainsboro;
+    padding: 10px;
+
+    .service-icon{
+      color: $primary;
+    //   border-color: $primary;
+    //   border-style: dashed;
+    //   border-width: 1px;   
+    //   width: 66px;
+    //   height: 66px;
+      border-radius: 100%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    //   background-color: #FFECEB;
+      margin-bottom: 10px;
+      transition: all 0.3s ease-in-out;
+      font-size: 22px;
+      background: rgb(229 229 229 / 40%);
+     
+    }
+    .service-title{
+        transition: all 0.3s ease-in-out;
+    }
+    // &:hover{
+    //     // background-color: $primary;
+    //     .service-icon{
+    //         background-color: $primary;
+    //         border-color: $white;
+    //         color: $white;
+    //     }
+    //     .service-title{
+    //         // color: $white!important;
+    //     }
+    // }
+}

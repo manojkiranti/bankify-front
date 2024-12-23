@@ -1,0 +1,29 @@
+.main-layout{
+    width:  100%;
+}
+
+.stepper-form-footer{
+    position: fixed;
+    left: $sidebarWidth;
+    bottom: 0;
+    right: 0;
+    padding: 1rem;
+    background: $white;
+}
+
+.main-layout{
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+    .main-body{
+        flex: 0 0 70%;
+        max-width: 70%;
+    }
+    .main-sidebar{
+        flex: 0 0 30%;
+        max-width: 30%;
+        padding: 0 1rem;
+        background: #f3f3f3;
+        border-left: 1px solid $borderColor;
+    }
+}
