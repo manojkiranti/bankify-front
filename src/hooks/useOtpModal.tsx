@@ -16,7 +16,7 @@ const useOtpModal = ({ onSubmitOtp }: UseOtpModalProps) => {
   const handleVerify = async (otp: string) => {
     try {
       await onSubmitOtp(otp);
-      message.success('OTP verified successfully.');
+      message.success('Your request have been submitted successfully.');
       hideModal();
     } catch (error: any) {
       message.error(error.message || 'OTP verification failed.');
