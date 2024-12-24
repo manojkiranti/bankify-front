@@ -94,11 +94,17 @@ html {
     overflow: hidden;
     gap: 20px;
 }
+.card-col{
+    // max-width: 380px;
+    // width: 380px;
+}
+.swiper-slide{
+    width: 80%!important;
+}
 .card-color {
     border-radius: 10px;
     color: white;
-    max-width: 380px;
-    width: 380px;
+    
     .card-color-body{
         display: flex;
         padding: 1.5rem;
@@ -127,6 +133,9 @@ html {
             font-size: 24px;
         }
     }
+}
+.swiper-card-wrapper{
+    margin-right: -32px;
 }
 .faq-logo{
     width: 48px;
