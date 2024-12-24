@@ -3,24 +3,18 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Container } from "@/components/Elements";
-import { Button, Col, Row, message, Breadcrumb, Card } from "antd";
+import { Button, Col, Row, message, Breadcrumb, Card, Dropdown, Space } from "antd";
 
-import { InputField, SelectField } from "@/components/Form";
-import { BRANCH_LIST } from "@/constant/options";
-import { HomeOutlined } from "@ant-design/icons";
+import { InputField } from "@/components/Form";
+import { DownOutlined, HomeOutlined } from "@ant-design/icons";
 import { useCustomerServiceRequestMutation } from "@/store/apis/coreApi";
 import { displayError } from "@/utils/displayMessageUtils";
 import { mobankMenuItems } from "../constant";
 import { NewMobankRegisterType } from "../types";
 import { newMobankRegisterSchema } from "../schema";
-
-
+import { Link } from "react-router-dom";
 
 const siteKey = import.meta.env.VITE_CAPTCHA_SITE_KEY;
-
-
-
-
 
 const NewMobankRegistration = () => {
     const [messageApi, contextHolder] = message.useMessage();
@@ -62,21 +56,29 @@ const NewMobankRegistration = () => {
 
       <Row>
         <Col xs={24} style={{marginBottom:"2rem"}}>
-          <Breadcrumb
-            items={[
-              {
-                href: '/',
-                title: <HomeOutlined />,
-              },
-              {
-                title: <a href="">Mobile Banking Services</a>,
-                menu: { items: mobankMenuItems },
-              },
-              {
-                title: 'New Registration',
-              },
-            ]}
-          />
+
+        <Breadcrumb>
+            <Breadcrumb.Item>
+              <Link to="/">
+                <HomeOutlined />
+              </Link>
+             </Breadcrumb.Item>
+
+             <Breadcrumb.Item>
+                <Dropdown menu={{items:mobankMenuItems}}>
+                  <a href="#" onClick={e => e.preventDefault()}>
+                    <Space>
+                       Mobile Banking Services
+                       <DownOutlined />
+                    </Space>
+                  </a>
+                </Dropdown>
+             </Breadcrumb.Item>
+
+             <Breadcrumb.Item>
+                New Registration
+            </Breadcrumb.Item>
+          </Breadcrumb>
         
         </Col>
       </Row>

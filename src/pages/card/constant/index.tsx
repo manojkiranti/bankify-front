@@ -1,42 +1,45 @@
-export const cardMenuItems = [
+import type { MenuProps } from 'antd';
+import { Link } from 'react-router-dom';
+
+export const cardMenuItems:MenuProps['items'] = [
     {
       key: '1',
       label: (
-        <a target="_blank" rel="noopener noreferrer" href="/">
+        <Link to="/card/new-debit-card">
           New Debit Card
-        </a>
+        </Link>
       ),
     },
     {
       key: '2',
       label: (
-        <a target="_blank" rel="noopener noreferrer" href="/">
+        <Link to="/card/new-credit-card">
           New Credit Card
-        </a>
+        </Link>
       ),
     },
     {
       key: '3',
       label: (
-        <a target="_blank" rel="noopener noreferrer" href="/">
-          Re-pin Debit Card
-        </a>
+        <Link to="/card/repin-request">
+            Re-pin Debit Card
+        </Link>
       ),
     },
     {
       key: '4',
       label: (
-        <a target="_blank" rel="noopener noreferrer" href="/">
+         <Link to="/card/debit-card-block">
           Debit Card Block
-        </a>
+         </Link>
       ),
     },
     {
       key: '5',
       label: (
-        <a target="_blank" rel="noopener noreferrer" href="/">
+        <Link to="/card/debit-card-unblock">
           Debit Card Unblock
-        </a>
+       </Link>
       ),
     }
   ];

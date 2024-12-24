@@ -1,34 +1,39 @@
-export const mobankMenuItems = [
+import type { MenuProps } from 'antd';
+import { Link } from 'react-router-dom';
+export const mobankMenuItems:MenuProps['items']  = [
     {
       key: '1',
       label: (
-        <a target="_blank" rel="noopener noreferrer" href="/">
-          New Registration
-        </a>
+
+        <Link to="/mobank/new-registration">
+           New Registration
+        </Link>
       ),
     },
     {
       key: '2',
       label: (
-        <a target="_blank" rel="noopener noreferrer" href="/">
-          Unblock Mobile Banking
-        </a>
+         <Link to="/mobank/reset-pin">
+            Reset Pin
+         </Link>
       ),
     },
     {
       key: '3',
       label: (
-        <a target="_blank" rel="noopener noreferrer" href="/">
-         Block Mobile Banking
-        </a>
+        <Link to="/mobank/deactivate">
+          Block Mobile Banking
+        </Link>
       ),
     },
     {
       key: '4',
       label: (
-        <a target="_blank" rel="noopener noreferrer" href="/">
-          Reset Pin / Password
-        </a>
+        <Link to="/mobank/activate">
+          Unblock Mobile Banking
+        </Link>
       ),
-    }
+    },
+    
+   
   ];

@@ -5,17 +5,18 @@ import { useForm } from "react-hook-form";
 import dayjs from 'dayjs';
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Container } from "@/components/Elements";
-import { Button, Col, Row, message, Breadcrumb, Card } from "antd";
+import { Button, Col, Row, message, Breadcrumb, Card, Dropdown, Space } from "antd";
 import {  BankGuranteeVerificationFormType } from "../types";
 import {  bankGuraneeVerificationSchema } from "../schema";
 import { DatePickerField, InputField, RadioGroupField, SelectField } from "@/components/Form";
 
-import { HomeOutlined } from "@ant-design/icons";
+import { DownOutlined, HomeOutlined } from "@ant-design/icons";
 import { useCustomerServiceRequestMutation } from "@/store/apis/coreApi";
 import { displayError } from "@/utils/displayMessageUtils";
 import { documentVerificationMenu } from "../constant";
 import { BRANCH_LIST } from "@/constant/options";
 import { currencies } from "@/utils/currenciesUtils";
+import { Link } from "react-router-dom";
 
 const siteKey = import.meta.env.VITE_CAPTCHA_SITE_KEY;
 
@@ -55,21 +56,29 @@ const BankGuranteeVerification = () => {
 
       <Row>
         <Col xs={24} style={{marginBottom:"2rem"}}>
-          <Breadcrumb
-            items={[
-              {
-                href: '/',
-                title: <HomeOutlined />,
-              },
-              {
-                title: <a href="">Document Verification</a>,
-                menu: { items: documentVerificationMenu },
-              },
-              {
-                title: 'Bank Gurantee Verification',
-              },
-            ]}
-          />
+
+          <Breadcrumb>
+            <Breadcrumb.Item>
+              <Link to="/">
+                <HomeOutlined />
+              </Link>
+             </Breadcrumb.Item>
+
+             <Breadcrumb.Item>
+                <Dropdown menu={{items:documentVerificationMenu}}>
+                  <a href="#" onClick={e => e.preventDefault()}>
+                    <Space>
+                        Document Verification
+                       <DownOutlined />
+                    </Space>
+                  </a>
+                </Dropdown>
+             </Breadcrumb.Item>
+
+             <Breadcrumb.Item>
+                Bank Gurantee Verification
+            </Breadcrumb.Item>
+          </Breadcrumb>
         
         </Col>
       </Row>

@@ -1,34 +1,37 @@
-export const loanMenu = [
+import type { MenuProps } from 'antd';
+import { Link } from 'react-router-dom';
+
+export const loanMenu:MenuProps['items'] = [
     {
       key: '1',
       label: (
-        <a target="_blank" rel="noopener noreferrer" href="/">
+        <Link to="/loan/home-loan">
           Home Loan
-        </a>
+        </Link>
       ),
     },
     {
         key: '2',
         label: (
-          <a target="_blank" rel="noopener noreferrer" href="/">
-            Gold Loan
-          </a>
+          <Link to="/loan/gold-loan">
+              Gold Loan
+          </Link>
         ),
       },
       {
         key: '3',
         label: (
-          <a target="_blank" rel="noopener noreferrer" href="/">
+          <Link to="/loan/loan-against-share">
             Loan Against Share
-          </a>
+          </Link>
         ),
       },
       {
         key: '4',
         label: (
-          <a target="_blank" rel="noopener noreferrer" href="/">
+          <Link to="/loan/credit-card">
             Credit Card
-          </a>
+          </Link>
         ),
       }
   ];

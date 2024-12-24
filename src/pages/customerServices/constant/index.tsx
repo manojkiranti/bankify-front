@@ -1,58 +1,61 @@
-export const customerSericesMenu = [
+import type { MenuProps } from 'antd';
+import { Link } from 'react-router-dom';
+
+export const customerSericesMenu:MenuProps['items'] = [
     {
       key: '1',
       label: (
-        <a target="_blank" rel="noopener noreferrer" href="/">
-          Fixed Deposit
-        </a>
+        <Link to="/customer-service/fixed-deposit">
+            Fixed Deposit
+        </Link>
       ),
     },
     {
       key: '2',
       label: (
-        <a target="_blank" rel="noopener noreferrer" href="/">
-          Dispute Claim
-        </a>
+        <Link to="/customer-service/dispute-claim">
+            Dispute Claim
+        </Link>
       ),
     },
     {
       key: '3',
       label: (
-        <a target="_blank" rel="noopener noreferrer" href="/">
+        <Link to="/customer-service/account-freeze">
           Block Account
-        </a>
+        </Link>
       ),
     },
     {
       key: '4',
       label: (
-        <a target="_blank" rel="noopener noreferrer" href="/">
+        <Link to="/customer-service/cheque-request">
           Cheque Request
-        </a>
+       </Link>
       ),
     },
     {
       key: '5',
       label: (
-        <a target="_blank" rel="noopener noreferrer" href="/">
+        <Link to="/customer-service/cheque-stop">
           Cheque Stop Payment
-        </a>
+        </Link>
       ),
     },
     {
       key: '6',
       label: (
-        <a target="_blank" rel="noopener noreferrer" href="/">
-          Balance Certificate
-        </a>
+        <Link to="/customer-service/balance-certificate-request">
+            Balance Certificate
+        </Link>
       ),
     },
     {
       key: '7',
       label: (
-        <a target="_blank" rel="noopener noreferrer" href="/">
-          Locker Request
-        </a>
+        <Link to="/customer-service/locker-request">
+            Locker Request
+        </Link>
       ),
     }
   ];

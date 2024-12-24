@@ -3,16 +3,17 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Container } from "@/components/Elements";
-import { Button, Col, Row, message, Breadcrumb, Card } from "antd";
+import { Button, Col, Row, message, Breadcrumb, Card, Dropdown, Space } from "antd";
 import { NewDebitCardFormType } from "../types";
 import { newDebitCardSchema } from "../schema";
 import { InputField, SelectField } from "@/components/Form";
 import { BRANCH_LIST } from "@/constant/options";
-import { HomeOutlined } from "@ant-design/icons";
+import { DownOutlined, HomeOutlined } from "@ant-design/icons";
 import { useCustomerServiceRequestMutation } from "@/store/apis/coreApi";
 import { displayError } from "@/utils/displayMessageUtils";
 import { cardMenuItems } from "../constant";
 import useOtpModal from "@/hooks/useOtpModal";
+import { Link } from "react-router-dom";
 
 
 const siteKey = import.meta.env.VITE_CAPTCHA_SITE_KEY;
@@ -69,21 +70,29 @@ const NewCreditCard = () => {
 
       <Row>
         <Col xs={24} style={{marginBottom:"2rem"}}>
-          <Breadcrumb
-            items={[
-              {
-                href: '/',
-                title: <HomeOutlined />,
-              },
-              {
-                title: <a href="">Card Services</a>,
-                menu: { items: cardMenuItems },
-              },
-              {
-                title: 'New Credit Card',
-              },
-            ]}
-          />
+
+          <Breadcrumb>
+            <Breadcrumb.Item>
+              <Link to="/">
+                <HomeOutlined />
+              </Link>
+             </Breadcrumb.Item>
+
+             <Breadcrumb.Item>
+                <Dropdown menu={{items:cardMenuItems}}>
+                  <a href="#" onClick={e => e.preventDefault()}>
+                    <Space>
+                        Card Services
+                       <DownOutlined />
+                    </Space>
+                  </a>
+                </Dropdown>
+             </Breadcrumb.Item>
+
+             <Breadcrumb.Item>
+                New Credit Card
+            </Breadcrumb.Item>
+          </Breadcrumb>
         
         </Col>
       </Row>

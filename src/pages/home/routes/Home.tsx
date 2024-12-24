@@ -35,7 +35,7 @@ const Home = () => {
                 <SectionHeading>Card Services</SectionHeading>
               </Col>
             </Row>
-            <Flex gap={20}>
+            <Flex gap={20} wrap="wrap">
               {cardServices.map((service) => {
                 return (
                   <div className="flex-column" key={service.name}>
@@ -54,7 +54,7 @@ const Home = () => {
                 <SectionHeading>Mobile Banking</SectionHeading>
               </Col>
             </Row>
-            <Flex gap={20}>
+            <Flex gap={20} wrap="wrap">
               {mobileBankingServices.map((service) => {
                 return (
                   <div className="flex-column" key={service.name}>
@@ -75,7 +75,7 @@ const Home = () => {
                 </SectionHeading>
               </Col>
             </Row>
-            <Flex gap={20}>
+            <Flex gap={20} wrap="wrap">
               {customerServices.map((service) => {
                 return (
                   <div className="flex-column" key={service.name}>
@@ -96,7 +96,7 @@ const Home = () => {
                 </SectionHeading>
               </Col>
             </Row>
-            <Flex gap={20}>
+            <Flex gap={20} wrap="wrap">
               {tellerServices.map((service) => {
                 return (
                   <div className="flex-column" key={service.name}>
@@ -117,7 +117,7 @@ const Home = () => {
                 </SectionHeading>
               </Col>
             </Row>
-            <Flex gap={20}>
+            <Flex gap={20} wrap="wrap">
               {loanServices.map((service) => {
                 return (
                   <div className="flex-column" key={service.name}>
@@ -139,7 +139,7 @@ const Home = () => {
                 </SectionHeading>
               </Col>
             </Row>
-            <Flex gap={20}>
+            <Flex gap={20} wrap="wrap">
               {documentVerificationServices.map((service) => {
                 return (
                   <div className="flex-column" key={service.name}>

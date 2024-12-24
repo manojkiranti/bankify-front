@@ -1,10 +1,13 @@
-export const documentVerificationMenu = [
+import type { MenuProps } from 'antd';
+import { Link } from 'react-router-dom';
+
+export const documentVerificationMenu:MenuProps['items'] = [
     {
       key: '1',
       label: (
-        <a target="_blank" rel="noopener noreferrer" href="/">
+        <Link to="/document-verification/bank-guarantee">
           Bank Gurantee Verification
-        </a>
+        </Link>
       ),
     }
   ];
