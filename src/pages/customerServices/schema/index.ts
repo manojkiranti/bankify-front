@@ -23,3 +23,59 @@ export const disputeClaimSchema = yup.object().shape({
   contactNumber: yup.string().required('Contact number is required'),
   email: yup.string().email().required("Email address is required")
 });
+
+export const blockAccountSchema = yup.object().shape({
+  accountNumber: yup
+    .string()
+    .required('Account number is required.'),
+  accountName: yup.string().required('Account name is required.'),
+  mobileNumber: yup.string().required('Mobile number is required.'),
+  email: yup.string().email().required('Email is required.'),
+  remarks: yup.string().required('Remarks is required.')
+});
+
+
+export const chequeRequestSchema = yup.object().shape({
+  accountNumber: yup
+    .string()
+    .required('Account number is required.'),
+  accountName: yup.string().required('Account name is required.'),
+  mobileNumber: yup.string().required('Mobile number is required.'),
+  email: yup.string().email().required('Email is required.'),
+  noOfLeaves: yup.number().required('Remarks is required.'),
+  branch: yup.string().required('Branch is required.'),
+  isCollectorDifferent: yup.string().required('Please select yes or no.'),
+});
+
+
+export const chequeStopPaymentSchema = yup.object().shape({
+  accountNumber: yup
+    .string()
+    .required('Account number is required.'),
+  accountName: yup.string().required('Account name is required.'),
+  mobileNumber: yup.string().required('Mobile number is required.'),
+  reason: yup.string().required('Reason to stop cheque payment is required.'),
+  amount: yup.number().required('Amount is required.'),
+  chequeNumber: yup.string().required('Cheque number is required.'),
+});
+
+export const balanceCertificateSchema = yup.object().shape({
+  accountNumber: yup
+    .string()
+    .required('Account number is required.'),
+  accountName: yup.string().required('Account name is required.'),
+  mobileNumber: yup.string().required('Mobile number is required.'),
+  branch: yup.string().required('Branch is required.'),
+  currency: yup.string().required('Currency is required.'),
+  date: yup.string().required('Date is required.'),
+  email: yup.string().email().required('Email is required.'),
+});
+
+export const lockerFormSchema = yup.object().shape({
+  accountNumber: yup
+    .string()
+    .required('Account number is required.'),
+  accountName: yup.string().required('Account name is required.'),
+  mobileNumber: yup.string().required('Mobile number is required.'),
+  branch: yup.string().required('Branch is required.')
+});

@@ -1,5 +1,6 @@
 import { faCreditCard, faCreditCardFront, faWindowRestore, faBan, faLockOpen, 
-    faMobile, faMobileRetro, faSignalStreamSlash, faCheckToSlot, faMoneyBillTransfer, faBadgeCheck, faCheckDouble, faQrcode, faCartShopping, faMoneyBillTrendUp } from "@fortawesome/pro-light-svg-icons";
+    faMobile, faMobileRetro, faSignalStreamSlash, faCheckToSlot, faMoneyBillTransfer, faBadgeCheck, 
+    faSackDollar, faMoneyCheckPen, faShield, faMessageDots, faOctagonExclamation, faFileCertificate, faCloudCheck } from "@fortawesome/pro-light-svg-icons";
 
 
 export const cardServices = [
@@ -74,5 +75,60 @@ export const customerServices = [
         icon: faBadgeCheck,
         link: 'customer-service/dispute-claim',
         name: 'disputeClaim'
+    },
+    {
+        title: "Block Account(Hack/Scam)",
+        icon: faShield,
+        link: 'customer-service/account-freeze',
+        name: 'accountFreeze'
+    },
+    {
+        title: "Cheque Request",
+        icon: faMessageDots,
+        link: 'customer-service/cheque-request',
+        name: 'chequeRequest'
+    },
+    {
+        title: "Cheque Stop",
+        icon: faOctagonExclamation,
+        link: 'customer-service/cheque-stop',
+        name: 'chequeStop'
+    },
+    {
+        title: "Balance Certificate",
+        icon: faFileCertificate,
+        link: 'customer-service/balance-certificate-request',
+        name: 'balanceCertificate'
+    },
+    {
+        title: "Locker Request",
+        icon: faFileCertificate,
+        link: 'customer-service/locker-request',
+        name: 'lockerRequest'
+    }
+]
+
+
+export const tellerServices = [
+    {
+        title: "Cash Deposit",
+        icon: faSackDollar,
+        link: 'teller-service/cash-deposit',
+        name: 'cashDeposit'
+    },
+    {
+        title: "Cheque Deposit",
+        icon: faMoneyCheckPen,
+        link: 'teller-service/cheque-deposit',
+        name: 'chequeDeposit'
+    }
+]
+
+export const documentVerificationServices = [
+    {
+        title: "Bank Gurantee Verification",
+        icon: faCloudCheck,
+        link: 'document-verification/bank-guarantee',
+        name: 'bankGuraneeVerification'
     }
 ]

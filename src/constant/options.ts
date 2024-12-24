@@ -527,3 +527,37 @@ export const BRANCH_LIST = [
     status: "Y",
   },
 ];
+
+
+
+export const CURRENCIES = [
+  { label: "USD", value: "USD" },
+  { label: "EUR", value: "EUR" },
+  { label: "JPY", value: "JPY" },
+  { label: "GBP", value: "GBP" },
+  { label: "AUD", value: "AUD" },
+  { label: "CAD", value: "CAD" },
+  { label: "CHF", value: "CHF" },
+  { label: "CNY", value: "CNY" },
+  { label: "SEK", value: "SEK" },
+  { label: "NZD", value: "NZD" },
+  { label: "MXN", value: "MXN" },
+  { label: "SGD", value: "SGD" },
+  { label: "HKD", value: "HKD" },
+  { label: "NOK", value: "NOK" },
+  { label: "KRW", value: "KRW" },
+  { label: "INR", value: "INR" },
+  { label: "RUB", value: "RUB" },
+  { label: "BRL", value: "BRL" },
+  { label: "ZAR", value: "ZAR" },
+  { label: "TRY", value: "TRY" },
+  { label: "MYR", value: "MYR" },
+  { label: "THB", value: "THB" },
+  { label: "PHP", value: "PHP" },
+  { label: "PLN", value: "PLN" },
+  { label: "IDR", value: "IDR" },
+  { label: "SAR", value: "SAR" },
+  { label: "AED", value: "AED" },
+  { label: "DKK", value: "DKK" },
+  { label: "NPR", value: "NPR" }
+];

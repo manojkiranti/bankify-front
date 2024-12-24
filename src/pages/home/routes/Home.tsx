@@ -5,7 +5,10 @@ import {
   cardServices,
   
   customerServices,
+  documentVerificationServices,
   mobileBankingServices,
+  
+  tellerServices,
 } from "../constant";
 import { ReactNode } from "react";
 import Banner from "../components/Banner";
@@ -21,11 +24,11 @@ const Home = () => {
   return (
     <>
      <Container width="sm">
-            <Row>
+            {/* <Row>
               <Col xs={24}>
                  <Banner />
               </Col>
-            </Row>
+            </Row> */}
             <Row>
               <Col xs={24}>
                 <SectionHeading>Card Services</SectionHeading>
@@ -84,8 +87,49 @@ const Home = () => {
                 );
               })}
             </Flex>
+
+            <Row>
+              <Col xs={24}>
+                <SectionHeading>
+                  Teller Services
+                </SectionHeading>
+              </Col>
+            </Row>
+            <Flex gap={20}>
+              {tellerServices.map((service) => {
+                return (
+                  <div className="flex-column" key={service.name}>
+                    <ServiceBox
+                      icon={service.icon}
+                      title={service.title}
+                      link={service.link}
+                    />
+                  </div>
+                );
+              })}
+            </Flex>
             
             
+            <Row>
+              <Col xs={24}>
+                <SectionHeading>
+                  Document Verification
+                </SectionHeading>
+              </Col>
+            </Row>
+            <Flex gap={20}>
+              {documentVerificationServices.map((service) => {
+                return (
+                  <div className="flex-column" key={service.name}>
+                    <ServiceBox
+                      icon={service.icon}
+                      title={service.title}
+                      link={service.link}
+                    />
+                  </div>
+                );
+              })}
+            </Flex>
           </Container>
     </>
   );

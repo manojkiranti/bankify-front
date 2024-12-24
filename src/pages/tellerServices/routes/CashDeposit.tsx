@@ -1,0 +1,162 @@
+import { useState } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { Container } from "@/components/Elements";
+import { Button, Col, Row, message, Breadcrumb, Card } from "antd";
+
+import { InputField, SelectField } from "@/components/Form";
+import { BRANCH_LIST } from "@/constant/options";
+import { HomeOutlined } from "@ant-design/icons";
+import { useCustomerServiceRequestMutation } from "@/store/apis/coreApi";
+import { displayError } from "@/utils/displayMessageUtils";
+import { tellerMenuItems } from "../constant";
+
+import { cashDepositSchema } from "../schema";
+import { CashDepositType } from "../types";
+
+
+
+const siteKey = import.meta.env.VITE_CAPTCHA_SITE_KEY;
+
+
+
+
+
+const CashDeposit = () => {
+    const [messageApi, contextHolder] = message.useMessage();
+    const [captchaValue, setCaptchaValue] = useState<string | null>(null);
+    const [postCustomerRequest, {isLoading}] = useCustomerServiceRequestMutation();
+      
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<CashDepositType>({
+    defaultValues: {},
+    resolver: yupResolver(cashDepositSchema),
+  });
+
+  const handleCaptchaChange = (value: string | null) => {
+    setCaptchaValue(value);
+  };
+
+  const onSubmit = (data: CashDepositType) => {
+    if (!captchaValue) {
+        messageApi.error("Please complete the reCAPTCHA to submit the form.")
+        return;
+      }
+     
+  };
+
+  return (
+    <>
+    {contextHolder}
+
+    <Container width="sm">
+
+      <Row>
+        <Col xs={24} style={{marginBottom:"2rem"}}>
+          <Breadcrumb
+            items={[
+              {
+                href: '/',
+                title: <HomeOutlined />,
+              },
+              {
+                title: <a href="">Teller Services</a>,
+                menu: { items: tellerMenuItems },
+              },
+              {
+                title: 'Cash Deposit',
+              },
+            ]}
+          />
+        
+        </Col>
+      </Row>
+      <Row>
+        <Col xs={24}>
+         <Card title="Cash Deposit">
+             <form onSubmit={handleSubmit(onSubmit)}>
+                <Row gutter={30}>
+                  <Col xs={24} md={8}>
+                    <InputField
+                      label="Deposit Account Number"
+                      name="depositAccountName"
+                      control={control}
+                      error={errors.depositAccountName?.message ?? ""}
+                      placeholder="Enter deposit account number"
+                      size="large"
+                      required={true}
+                    />
+                  </Col>
+                  <Col xs={24} md={8}>
+                    <InputField
+                      label="Deposit Account Holder's Name"
+                      name="depositAccountName"
+                      control={control}
+                      error={errors.depositAccountName?.message ?? ""}
+                      placeholder="Enter deposit account holder's name"
+                      size="large"
+                      required={true}
+                    />
+                  </Col>
+                  <Col xs={24} md={8}>
+                    <SelectField
+                      options={[
+                        {
+                            label: "NPR",
+                            value: "npr"
+                        }
+                      ]}
+                      label="Currency"
+                      name="currency"
+                      control={control}
+                      error={errors.currency?.message ?? ""}
+                      placeholder="Please select currency"
+                      size="large"
+                      required={true}
+
+                    />
+                  </Col>
+                  <Col xs={24} md={8}>
+                    <SelectField
+                      options={BRANCH_LIST}
+                      label="Branch"
+                      name="branch"
+                      control={control}
+                      error={errors.branch?.message ?? ""}
+                      placeholder="Branch"
+                      size="large"
+                      required={true}
+                      showSearch={true}
+                      fieldNames={{
+                        label: "branchName",
+                        value: "id"
+                      }}
+                    />
+                  </Col>
+                  
+                  <Col xs={24}>
+                    <ReCAPTCHA sitekey={siteKey} onChange={handleCaptchaChange} />
+                  </Col>
+                  
+                </Row>
+                <Col xs={24} style={{marginTop:"1rem"}}>
+                  <Button type="primary" htmlType="submit" size="large" loading={isLoading} disabled={isLoading}>
+                    Submit
+                  </Button>
+                </Col>
+              </form>
+         </Card>
+             
+          
+        </Col>
+      </Row>
+    </Container>
+    </>
+  );
+};
+
+export default CashDeposit;

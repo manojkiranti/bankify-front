@@ -36,7 +36,15 @@ const {CustomerServiceRoutes} = lazyImport(
   () => import('@/pages/customerServices'),
   'CustomerServiceRoutes',
 );
+const {TellerRoutes} = lazyImport(
+  () => import('@/pages/tellerServices'),
+  'TellerRoutes',
+);
 
+const {DocumentVerificationRoutes} = lazyImport(
+  () => import('@/pages/documentVerification'),
+  'DocumentVerificationRoutes',
+);
 
 const App = () => {
   return (
@@ -67,6 +75,14 @@ export const publicRoutes = [
       {
         path: 'customer-service/*',
         element: <CustomerServiceRoutes />,
+      },
+      {
+        path: 'teller-service/*',
+        element: <TellerRoutes />,
+      },
+      {
+        path: 'document-verification/*',
+        element: <DocumentVerificationRoutes />,
       },
       {
         path: 'thank-you',
