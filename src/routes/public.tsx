@@ -46,6 +46,11 @@ const {DocumentVerificationRoutes} = lazyImport(
   'DocumentVerificationRoutes',
 );
 
+const {LoanRoutes} = lazyImport(
+  () => import('@/pages/loans'),
+  'LoanRoutes',
+);
+
 const App = () => {
   return (
     <PublicLayout>
@@ -83,6 +88,10 @@ export const publicRoutes = [
       {
         path: 'document-verification/*',
         element: <DocumentVerificationRoutes />,
+      },
+      {
+        path: 'loan/*',
+        element: <LoanRoutes />,
       },
       {
         path: 'thank-you',

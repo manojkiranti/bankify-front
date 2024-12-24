@@ -1,6 +1,8 @@
 import { faCreditCard, faCreditCardFront, faWindowRestore, faBan, faLockOpen, 
     faMobile, faMobileRetro, faSignalStreamSlash, faCheckToSlot, faMoneyBillTransfer, faBadgeCheck, 
-    faSackDollar, faMoneyCheckPen, faShield, faMessageDots, faOctagonExclamation, faFileCertificate, faCloudCheck } from "@fortawesome/pro-light-svg-icons";
+    faSackDollar, faMoneyCheckPen, faShield, faMessageDots, faOctagonExclamation, faFileCertificate, faCloudCheck,
+    faHome, faCoin, faMoneyBillTrendUp
+ } from "@fortawesome/pro-light-svg-icons";
 
 
 export const cardServices = [
@@ -130,5 +132,32 @@ export const documentVerificationServices = [
         icon: faCloudCheck,
         link: 'document-verification/bank-guarantee',
         name: 'bankGuraneeVerification'
+    }
+]
+
+export const loanServices = [
+    {
+        title: "Home Loan",
+        icon: faHome,
+        link: 'loan/home-loan',
+        name: 'homeLoan'
+    },
+    {
+        title: "Gold Loan",
+        icon: faCoin,
+        link: 'loan/gold-loan',
+        name: 'goldLoan'
+    },
+    {
+        title: "Loan Against Share",
+        icon: faMoneyBillTrendUp,
+        link: 'loan/loan-against-share',
+        name: 'loanAgainstShare'
+    },
+    {
+        title: "Credit Card",
+        icon: faCreditCard,
+        link: 'loan/credit-card',
+        name: 'creditCardLoan'
     }
 ]

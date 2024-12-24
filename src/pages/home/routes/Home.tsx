@@ -6,6 +6,7 @@ import {
   
   customerServices,
   documentVerificationServices,
+  loanServices,
   mobileBankingServices,
   
   tellerServices,
@@ -108,6 +109,27 @@ const Home = () => {
                 );
               })}
             </Flex>
+
+            <Row>
+              <Col xs={24}>
+                <SectionHeading>
+                  Loans
+                </SectionHeading>
+              </Col>
+            </Row>
+            <Flex gap={20}>
+              {loanServices.map((service) => {
+                return (
+                  <div className="flex-column" key={service.name}>
+                    <ServiceBox
+                      icon={service.icon}
+                      title={service.title}
+                      link={service.link}
+                    />
+                  </div>
+                );
+              })}
+            </Flex>
             
             
             <Row>
@@ -130,6 +152,8 @@ const Home = () => {
                 );
               })}
             </Flex>
+
+            
           </Container>
     </>
   );
