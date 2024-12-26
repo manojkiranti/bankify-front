@@ -3,43 +3,18 @@
 import BANK from "@/assets/images/bank.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAddressCard } from "@fortawesome/pro-light-svg-icons";
-import { Input, Typography, Collapse, Button } from 'antd';
-import type { CollapseProps } from 'antd';
+import { Input, Typography, Button } from 'antd';
 import { faSearch } from "@fortawesome/pro-light-svg-icons";
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import 'swiper/css';
+import FAQ from "./FAQ";
 // import { Scrollbars } from "rc-scrollbars";
 
 // const { useBreakpoint } = Grid;
 
-const text = `
-  There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. 
-`;
 
 const Sidebar = () => {
-  const items: CollapseProps['items'] = [
-    {
-      key: '1',
-      label: "I didn't receive the OTP code.",
-      children: <p>{text}</p>,
-    },
-    {
-      key: '2',
-      label: 'Documents required for credit card.',
-      children: <p>{text}</p>,
-    },
-    {
-      key: '3',
-      label: 'Does my debit card will block instantly?',
-      children: <p>{text}</p>,
-    },
-    {
-      key: '4',
-      label: 'How long does it takes to process new debit card?',
-      children: <p>{text}</p>,
-    },
-  ];
 
   return (
     <>
@@ -65,7 +40,7 @@ const Sidebar = () => {
               <div className="faq-list"  style={{
                 padding:"0 1rem"
               }}>
-                <Collapse accordion items={items} />
+                <FAQ />
               </div>
 
               <div className="sidebar-cards" style={{padding:"0 1rem"}}>
