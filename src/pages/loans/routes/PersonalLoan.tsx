@@ -1,211 +1,129 @@
-import { useEffect, useState } from "react";
-import ReCAPTCHA from "react-google-recaptcha";
-import { useForm } from "react-hook-form";
-import { Link, useParams } from "react-router-dom";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { Container } from "@/components/Elements";
-import { Button, Col, Row, message, Breadcrumb, Card, Dropdown, Space } from "antd";
+import { useFetchServiceListQuery } from "@/store/apis/coreApi";
+import { Alert, Spin, Table } from "antd";
+import { ColumnsType } from 'antd/es/table';
 
-import { InputField, SelectField } from "@/components/Form";
-import { DownOutlined, HomeOutlined } from "@ant-design/icons";
-import { useCustomerServiceRequestMutation } from "@/store/apis/coreApi";
-import { displayError } from "@/utils/displayMessageUtils";
+interface ServiceRequest {
+  id: number; // Assuming each result has a unique 'id'
+  account_number: string;
+  status: string;
+  created_at: string;
+  // Add other fields based on your actual data structure
+}
 
-import { LoanFormType } from "../types";
-import { loanSchema } from "../schema";
-import { loanMenu } from "../constant";
-const siteKey = import.meta.env.VITE_CAPTCHA_SITE_KEY;
+// 2. Define the columns for the Ant Design Table
+const columns: ColumnsType<ServiceRequest> = [
+  // {
+  //   title: 'ID',
+  //   dataIndex: 'id',
+  //   key: 'id',
 
-const PersonalLoan = () => {
-    const { loantype } = useParams<{ loantype: string }>();
-    const [messageApi, contextHolder] = message.useMessage();
-    const [captchaValue, setCaptchaValue] = useState<string | null>(null);
-    const [postCustomerRequest, {isLoading}] = useCustomerServiceRequestMutation();
-    
-    const loanTitles: Record<string, string> = {
-        "home-loan": "Home Loan",
-        "car-loan": "Car Loan",
-        "gold-loan": "Gold Loan",
-        "loan-against-share": "Loan Against Share",
-        "credit-card": "Credit Card"
-    };
-    
-  const {
-    control,
-    handleSubmit,
-    setValue,
-    formState: { errors },
-  } = useForm<LoanFormType>({
-    defaultValues: {},
-    resolver: yupResolver(loanSchema),
+  // },
+  {
+    title: 'Account Number',
+    dataIndex: 'account_number',
+    key: 'account_number'
+  },
+  {
+    title: 'Account Name',
+    dataIndex:["data","account_name"],
+    key: 'account_name'
+  },
+
+  {
+    title: 'Email',
+    dataIndex: ["data","email"],
+    key: 'email'
+  },
+  {
+    title: 'Mobile Number',
+    dataIndex: ["data","mobile_number"],
+    key: 'mobile_number'
+  },
+  {
+    title: 'Loan Amount',
+    dataIndex: ["data","loan_amount"],
+    key: 'loan_amount'
+  },
+  {
+    title: 'Loan Type',
+    dataIndex: ["data","loan_type"],
+    key: 'loan_type'
+  },
+  {
+    title: 'Payback Period',
+    dataIndex: ["data","payback_period"],
+    key: 'payback_period'
+  },
+  {
+    title: 'Status',
+    dataIndex: 'status',
+    key: 'status',
+    filters: [
+      { text: 'Active', value: 'active' },
+      { text: 'Inactive', value: 'inactive' },
+      // Add more filters as needed
+    ],
+
+  },
+  {
+    title: 'Requested At',
+    dataIndex: 'created_at',
+    key: 'created_at',
+    render: (date: string) => new Date(date).toLocaleDateString(),
+  },
+  // Add more columns as needed
+];
+
+interface PersonalLoanProps {
+  loanType: string;
+}
+const PersonalLoan: React.FC<PersonalLoanProps> = ({ loanType }) => {
+  // 3. Fetch data using RTK Query
+  const { data, isLoading, isError, error } = useFetchServiceListQuery({
+    service_name: "loan_service",
+    action_name: loanType,
   });
 
-  useEffect(() => {
-    if(loantype) {
-        setValue("loanType", loantype)
-    }   
-  },[loantype]);
+  // Extract the results array or set it to an empty array if data is undefined
+  const tableData: ServiceRequest[] = data?.results || [];
 
-  const handleCaptchaChange = (value: string | null) => {
-    setCaptchaValue(value);
-  };
+  // Handle loading state
+  if (isLoading) {
+    return (
+      <div style={{ textAlign: 'center', padding: '50px' }}>
+        <Spin size="large" />
+      </div>
+    );
+  }
 
-  const onSubmit = (data: LoanFormType) => {
-    if (!captchaValue) {
-        messageApi.error("Please complete the reCAPTCHA to submit the form.")
-        return;
-      }
-     
-  };
+  // Handle error state
+  if (isError) {
+    return (
+      <Alert
+        message="Error"
+        description={error?.toString() || "An error occurred while fetching data."}
+        type="error"
+        showIcon
+      />
+    );
+  }
 
   return (
-    <>
-    {contextHolder}
-
-    <Container width="sm">
-
-      <Row>
-        <Col xs={24} style={{marginBottom:"2rem"}}>
- 
-
-          <Breadcrumb>
-            <Breadcrumb.Item>
-              <Link to="/">
-                <HomeOutlined />
-              </Link>
-             </Breadcrumb.Item>
-
-             <Breadcrumb.Item>
-                <Dropdown menu={{items:loanMenu}}>
-                  <a href="#" onClick={e => e.preventDefault()}>
-                    <Space>
-                        Loan Services
-                       <DownOutlined />
-                    </Space>
-                  </a>
-                </Dropdown>
-             </Breadcrumb.Item>
-
-             <Breadcrumb.Item>
-               {loanTitles[loantype || ""] || "Loan"}
-            </Breadcrumb.Item>
-          </Breadcrumb>
-        
-        </Col>
-      </Row>
-      <Row>
-        <Col xs={24}>
-         <Card title={loanTitles[loantype || ""] || "Loan"}>
-             <form onSubmit={handleSubmit(onSubmit)}>
-                <Row gutter={30}>
-                  <Col xs={24} md={8}>
-                    <InputField
-                      label="Account Number"
-                      name="accountNumber"
-                      control={control}
-                      error={errors.accountNumber?.message ?? ""}
-                      placeholder="Enter your registered account number"
-                      size="large"
-                      required={true}
-                    />
-                  </Col>
-                  <Col xs={24} md={8}>
-                    <InputField
-                      label="Mobile Number"
-                      name="mobileNumber"
-                      control={control}
-                      error={errors.mobileNumber?.message ?? ""}
-                      placeholder="Enter you registered mobile number"
-                      size="large"
-                      required={true}
-                    />
-                  </Col>
-                  <Col xs={24} md={8}>
-                    <InputField
-                      label="Account Name"
-                      name="accountName"
-                      control={control}
-                      error={errors.accountName?.message ?? ""}
-                      placeholder="Account Name"
-                      size="large"
-                      required={true}
-                    />
-                  </Col>
-                  
-                  <Col xs={24} md={8}>
-                    <InputField
-                      label="Email"
-                      name="email"            
-                      control={control}
-                      error={errors.email?.message ?? ""}
-                      placeholder="Email"
-                      size="large"
-                      required={true}
-                    />
-                  </Col>
-                  <Col xs={24} md={8}>
-                    <SelectField
-                        options={[
-                            {label:"Home Loan", value:"home-loan"},
-                            {label:"Gold Loan", value:"gold-loan"},
-                            {label:"Loan Against Share", value:"loan-against-share"},
-                            {label:"Credit Card", value:"credit-card"}
-                        ]}
-                        name="loanType"
-                        control={control}
-                        label="Loan Type"
-                        size="large"
-                        placeholder="Select Loan Type"
-                        error={errors.loanType?.message ?? ''}
-                        required={true}
-                    />
-                  </Col>
-
-                  <Col xs={24} md={8}>
-                    <InputField
-                      label="Loan Amount"
-                      name="loanAmount"            
-                      control={control}
-                      error={errors.loanAmount?.message ?? ""}
-                      placeholder="Loan Amount"
-                      type="number"
-                      size="large"
-                      required={true}
-                    />
-                  </Col>
-
-                  <Col xs={24} md={8}>
-                    <InputField
-                      label="Payback Period(in Years)"
-                      name="paybackPeriod"            
-                      control={control}
-                      error={errors.paybackPeriod?.message ?? ""}
-                      placeholder="Loan Amount"
-                      type="number"
-                      size="large"
-                      required={true}
-                      suffix="yrs"
-                    />
-                  </Col>
-                  
-                  <Col xs={24}>
-                    <ReCAPTCHA sitekey={siteKey} onChange={handleCaptchaChange} />
-                  </Col>
-                  
-                </Row>
-                <Col xs={24} style={{marginTop:"1rem"}}>
-                  <Button type="primary" htmlType="submit" size="large" loading={isLoading} disabled={isLoading}>
-                    Submit
-                  </Button>
-                </Col>
-              </form>
-         </Card>
-             
-          
-        </Col>
-      </Row>
-    </Container>
-    </>
+    <div>
+      {/* <Typography.Title level={4}>New Mobank Registration</Typography.Title> */}
+      <Table
+        columns={columns}
+        dataSource={tableData}
+        rowKey="id" // Ensure each row has a unique key
+        bordered
+        pagination={{
+          pageSize: 10, // Adjust page size as needed
+          total: data?.count, // Total number of records
+          showSizeChanger: false, // Hide page size changer if not needed
+        }}
+        // Optional: Add more table props like onChange for sorting/filtering
+      />
+    </div>
   );
 };
 

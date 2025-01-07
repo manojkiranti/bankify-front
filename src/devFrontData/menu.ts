@@ -36,5 +36,23 @@ export const MENU_ITEMS: MenuType[] = [
     label: 'Customer Service',
     link: '/customer-service',
     icon: 'customerService', // Updated icon
+  },
+  {
+    key: '6',
+    label: 'Teller Service',
+    link: '/teller-service',
+    icon: 'teller', // Updated icon
+  },
+  {
+    key: '7',
+    label: 'Loans',
+    link: '/loans',
+    icon: 'loan', // Updated icon
+  },
+  {
+    key: '8',
+    label: 'Document Service',
+    link: '/document-service',
+    icon: 'document', // Updated icon
   }
 ];

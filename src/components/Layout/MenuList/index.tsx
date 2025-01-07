@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Menu } from "antd";
 import type { MenuProps } from "antd";
 import { FormOutlined, GlobalOutlined, OpenAIOutlined, FileTextOutlined, FolderOutlined, UserOutlined, 
-    FileDoneOutlined, AppstoreOutlined, MobileOutlined, CreditCardOutlined, CustomerServiceOutlined } from "@ant-design/icons";
+    FileDoneOutlined, AppstoreOutlined, MobileOutlined, CreditCardOutlined, CustomerServiceOutlined, DesktopOutlined, MoneyCollectOutlined } from "@ant-design/icons";
 import { MENU_ITEMS } from "@/devFrontData/menu";
 import { useTheme } from "@/contexts/themeContext";
 import { MenuType } from "@/types";
@@ -20,6 +20,8 @@ const ICON_WRAPPER: { [key: string]: JSX.Element } = {
     mobile: <MobileOutlined />,
     card: <CreditCardOutlined />,
     customerService: <CustomerServiceOutlined />,
+    teller: <DesktopOutlined />,
+    loan: <MoneyCollectOutlined />
 };
 
 interface MenuListProps {

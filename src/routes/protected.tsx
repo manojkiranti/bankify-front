@@ -36,6 +36,21 @@ const { CustomerServiceRoutes } = lazyImport(
   'CustomerServiceRoutes',
 );
 
+const { TellerRoutes } = lazyImport(
+  () => import('@/pages/tellerServices'),
+  'TellerRoutes',
+);
+
+const { LoanRoutes } = lazyImport(
+  () => import('@/pages/loans'),
+  'LoanRoutes',
+);
+
+const { DocumentVerificationRoutes } = lazyImport(
+  () => import('@/pages/documentVerification'),
+  'DocumentVerificationRoutes',
+);
+
 const App = () => {
   return (
     <MainLayout>
@@ -59,6 +74,9 @@ export const protectedRoutes = [
           { path: 'mobile-banking/*', element: <MobankRoutes /> },
           { path: 'card/*', element: <CardRoutes /> },
           { path: 'customer-service/*', element: <CustomerServiceRoutes /> },
+          { path: 'teller-service/*', element: <TellerRoutes /> },
+          { path: 'loans/*', element: <LoanRoutes /> },
+          { path: 'document-service/*', element: <DocumentVerificationRoutes /> },
           { path: 'profile', element: <ProfilePage /> },
           { path: '*', element: <Navigate to="." /> },
         ],
