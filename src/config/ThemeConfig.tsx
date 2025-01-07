@@ -51,12 +51,16 @@ const ThemeConfig: FC<ThemeConfigProps> = ({ children }) => {
           },
 
           Menu: {
-            itemActiveBg: 'transparent',
-            itemSelectedBg: 'transparent',
+            // itemActiveBg: 'transparent',
+            // itemSelectedBg: 'transparent',
             darkItemSelectedColor: '#f5bf36',
             darkGroupTitleColor: '#fff',
             colorLinkActive: '#fff',
             groupTitleColor: 'red',
+            itemColor:"#fff",
+            itemHoverColor:"#fff",
+            
+
           },
           Collapse: {
             headerBg: "#ffffff"

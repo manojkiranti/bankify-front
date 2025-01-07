@@ -1,233 +1,126 @@
-import { useState } from "react";
-import ReCAPTCHA from "react-google-recaptcha";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { Container } from "@/components/Elements";
-import { Button, Col, Row, message, Breadcrumb, Card, Dropdown, Space } from "antd";
-import { DisputeClaimType } from "../types";
-import { disputeClaimSchema } from "../schema";
-import { DatePickerField, InputField, SelectField } from "@/components/Form";
+import { useFetchServiceListQuery } from "@/store/apis/coreApi";
+import { Alert, Spin, Table } from "antd";
+import { ColumnsType } from 'antd/es/table';
 
-import { DownOutlined, HomeOutlined } from "@ant-design/icons";
-import { useCustomerServiceRequestMutation } from "@/store/apis/coreApi";
-import { displayError } from "@/utils/displayMessageUtils";
-import { customerSericesMenu } from "../constant";
-import { Link } from "react-router-dom";
+interface ServiceRequest {
+  id: number; // Assuming each result has a unique 'id'
+  account_number: string;
+  status: string;
+  created_at: string;
+  // Add other fields based on your actual data structure
+}
 
-const siteKey = import.meta.env.VITE_CAPTCHA_SITE_KEY;
+// 2. Define the columns for the Ant Design Table
+const columns: ColumnsType<ServiceRequest> = [
+  // {
+  //   title: 'ID',
+  //   dataIndex: 'id',
+  //   key: 'id',
 
-const DisputeClaim = () => {
-    const [messageApi, contextHolder] = message.useMessage();
-    const [captchaValue, setCaptchaValue] = useState<string | null>(null);
-    const [postCustomerRequest, {isLoading}] = useCustomerServiceRequestMutation();
-      
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<DisputeClaimType>({
-    defaultValues: {
-        
-    },
-    resolver: yupResolver(disputeClaimSchema),
+  // },
+  {
+    title: 'Account Number',
+    dataIndex: 'account_number',
+    key: 'account_number'
+  },
+  {
+    title: 'Account Name',
+    dataIndex:["data","account_name"],
+    key: 'account_name'
+  },
+  {
+    title: 'Email',
+    dataIndex: ["data","email"],
+    key: 'email'
+  },
+
+  {
+    title: 'Dispute Amount',
+    dataIndex: ["data","dispute_amount"],
+    key: 'dispute_amount'
+  },
+  {
+    title: 'Transaction Bank/Merchant',
+    dataIndex: ["data","transaction_bank_merchant"],
+    key: 'transaction_bank_merchant'
+  },
+  
+  {
+    title: 'Transaction Date',
+    dataIndex: ["data","transaction_date"],
+    key: 'transaction_date'
+  },
+  {
+    title: 'Transaction Location',
+    dataIndex: ["data","transaction_location"],
+    key: 'transaction_location'
+  },
+  {
+    title: 'Status',
+    dataIndex: 'status',
+    key: 'status',
+    filters: [
+      { text: 'Active', value: 'active' },
+      { text: 'Inactive', value: 'inactive' },
+      // Add more filters as needed
+    ],
+
+  },
+  {
+    title: 'Requested At',
+    dataIndex: 'created_at',
+    key: 'created_at',
+    render: (date: string) => new Date(date).toLocaleDateString(),
+  },
+  // Add more columns as needed
+];
+const DisputeClaim: React.FC = () => {
+  // 3. Fetch data using RTK Query
+  const { data, isLoading, isError, error } = useFetchServiceListQuery({
+    service_name: "customer_service",
+    action_name: "dispute_claim",
   });
 
-  const handleCaptchaChange = (value: string | null) => {
-    setCaptchaValue(value);
-  };
+  // Extract the results array or set it to an empty array if data is undefined
+  const tableData: ServiceRequest[] = data?.results || [];
 
-  const onSubmit = (data: DisputeClaimType) => {
-    if (!captchaValue) {
-        messageApi.error("Please complete the reCAPTCHA to submit the form.")
-        return;
-      }
-      postCustomerRequest({action:"debit_card_register", data})
-      .then(response => {
-        messageApi.success("Your debit card request has been submitted successfully.")
-      })
-      .catch(err => {
-        displayError(err)
-      })
-  };
+  // Handle loading state
+  if (isLoading) {
+    return (
+      <div style={{ textAlign: 'center', padding: '50px' }}>
+        <Spin size="large" />
+      </div>
+    );
+  }
+
+  // Handle error state
+  if (isError) {
+    return (
+      <Alert
+        message="Error"
+        description={error?.toString() || "An error occurred while fetching data."}
+        type="error"
+        showIcon
+      />
+    );
+  }
 
   return (
-    <>
-    {contextHolder}
-
-    <Container width="sm">
-
-      <Row>
-        <Col xs={24} style={{marginBottom:"2rem"}}>
-
-          <Breadcrumb>
-            <Breadcrumb.Item>
-              <Link to="/">
-                <HomeOutlined />
-              </Link>
-             </Breadcrumb.Item>
-
-             <Breadcrumb.Item>
-                <Dropdown menu={{items:customerSericesMenu}}>
-                  <a href="#" onClick={e => e.preventDefault()}>
-                    <Space>
-                        Customer Services
-                       <DownOutlined />
-                    </Space>
-                  </a>
-                </Dropdown>
-             </Breadcrumb.Item>
-
-             <Breadcrumb.Item>
-                Dispute Claim
-            </Breadcrumb.Item>
-          </Breadcrumb>
-        
-        </Col>
-      </Row>
-      <Row>
-        <Col xs={24}>
-         <Card title="Dispute Claim">
-             <form onSubmit={handleSubmit(onSubmit)}>
-                <Row gutter={30}>
-                  <Col xs={24} md={8}>
-                    <SelectField
-                      options={[
-                        {
-                            label: "ATM/POS/Ecommerce",
-                            value: "atm_pos_ecommerce"
-                        },
-                        {
-                            label: "Mobile Banking/QR",
-                            value: "mobile_banking_qr",
-                        },
-                        {
-                            label: "Internet Banking",
-                            value: "internet_banking",
-                        }
-                      ]}
-                      label="Dispute Type"
-                      name="disputeType"
-                      control={control}
-                      error={errors.disputeType?.message ?? ""}
-                      placeholder="Select dispute type"
-                      size="large"
-                      required={true}
-                    />
-                  </Col>
-                  <Col xs={24} md={8}>
-                    <InputField
-                      label="Account Number"
-                      name="accountNumber"
-                      control={control}
-                      error={errors.accountNumber?.message ?? ""}
-                      placeholder="Enter your registered account number"
-                      size="large"
-                      required={true}
-                    />
-                  </Col>
-                  <Col xs={24} md={8}>
-                    <InputField
-                      label="Account Name"
-                      name="accountName"
-                      control={control}
-                      error={errors.accountName?.message ?? ""}
-                      placeholder="Enter your name"
-                      size="large"
-                      required={true}
-                    />
-                  </Col>
-                  <Col xs={24} md={8}>
-                    <DatePickerField
-                        control={control}
-                        label="Transaction Date"
-                        name="transactionDate"
-                        size="large"
-                        placeholder="Select Date of Transaction"
-                        error={errors?.transactionDate?.message}
-                        required={true}
-                    />
-                  </Col>
-                  
-                  <Col xs={24} md={8}>
-                    <InputField
-                      label="Claim/Dispute Amount"
-                      name="disputeAmount"            
-                      control={control}
-                      error={errors.disputeAmount?.message ?? ""}
-                      placeholder="Email"
-                      size="large"
-                      required={true}
-                      type="number"
-                    />
-                  </Col>
-
-                  <Col xs={24} md={8}>
-                    <InputField
-                      label="Transaction Bank/Merchant"
-                      name="transactionBank"            
-                      control={control}
-                      error={errors.transactionBank?.message ?? ""}
-                      size="large"
-                      required={true}
-                    />
-                  </Col>
-
-                  <Col xs={24} md={8}>
-                    <InputField
-                      label="Transaction Location/Country"
-                      name="transactionLocation"            
-                      control={control}
-                      error={errors.transactionLocation?.message ?? ""}
-                      size="large"
-                      required={true}
-                    />
-                  </Col>
-                 
-
-                  <Col xs={24} md={8}>
-                    <InputField
-                      label="Contact Number"
-                      name="contactNumber"            
-                      control={control}
-                      error={errors.contactNumber?.message ?? ""}
-                      size="large"
-                      required={true}
-                    />
-                  </Col>
-                  <Col xs={24} md={8}>
-                    <InputField
-                      label="Email"
-                      name="email"            
-                      control={control}
-                      error={errors.email?.message ?? ""}
-                      placeholder="Email"
-                      size="large"
-                      required={true}
-                    />
-                  </Col>
-                 
-
-                  
-
-                 
-                  <Col xs={24}>
-                    <ReCAPTCHA sitekey={siteKey} onChange={handleCaptchaChange} />
-                  </Col>
-                  
-                </Row>
-                <Col xs={24} style={{marginTop:"1rem"}}>
-                  <Button type="primary" htmlType="submit" size="large" loading={isLoading} disabled={isLoading}>
-                    Submit
-                  </Button>
-                </Col>
-              </form>
-         </Card>
-             
-          
-        </Col>
-      </Row>
-    </Container>
-    </>
+    <div>
+      {/* <Typography.Title level={4}>New Mobank Registration</Typography.Title> */}
+      <Table
+        columns={columns}
+        dataSource={tableData}
+        rowKey="id" // Ensure each row has a unique key
+        bordered
+        pagination={{
+          pageSize: 10, // Adjust page size as needed
+          total: data?.count, // Total number of records
+          showSizeChanger: false, // Hide page size changer if not needed
+        }}
+        // Optional: Add more table props like onChange for sorting/filtering
+      />
+    </div>
   );
 };
 

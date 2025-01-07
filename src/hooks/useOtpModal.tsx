@@ -2,24 +2,31 @@
 import { useState } from 'react';
 import { message } from 'antd';
 import { OtpModal } from '@/components/Elements';
+import { useServiceOtpVerifyMutation } from '@/store/apis/coreApi';
+import { displayError } from '@/utils/displayMessageUtils';
 
 interface UseOtpModalProps {
-  onSubmitOtp: (otp: string) => Promise<void>;
+
+  serviceId: string | null;
+  handleServiceSubmission: () => void;
 }
 
-const useOtpModal = ({ onSubmitOtp }: UseOtpModalProps) => {
+const useOtpModal = ({ serviceId, handleServiceSubmission }: UseOtpModalProps) => {
   const [visible, setVisible] = useState<boolean>(false);
+  const [verifyOtp, {isLoading:OtpVerifyLoading}] = useServiceOtpVerifyMutation();
 
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
 
   const handleVerify = async (otp: string) => {
     try {
-      await onSubmitOtp(otp);
+      await verifyOtp({otp_code:otp, pending_request_id: serviceId as string}).unwrap();
       message.success('Your request have been submitted successfully.');
       hideModal();
+      handleServiceSubmission();
     } catch (error: any) {
-      message.error(error.message || 'OTP verification failed.');
+      displayError(error)
+      // message.error(error.message || 'OTP verification failed.');
     }
   };
 

@@ -1,97 +1,148 @@
-@import '@/assets/scss/config/variable.scss';
-
-/* 
-
- Position of container
-    position: absolute;
-    bottom: 5%;
-    justify-self: center; - centers horizontally
-    align-self: center;   - Centers itself vertically
-    
-Size of container
-    width: 200px;
-    height: 150px;
-    border: 1px solid $borderColor;
-    border-radius: 10px;
-    background-color: white;
-    
-Layout within the container
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-*/
-
-.mainLayout {
+.main-layout {
   width: 100%;
   max-width: 100%;
-  background-color: #f9fafb;
 
   min-height: 100vh;
   position: relative;
   overflow: hidden;
-
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: flex-start;
 }
 
-// .mainBodyContainer {
-//     flex: 1;
 
-//     &.collapsedSidebar {
-//         margin-left: 90px;
-//     }
-// }
-
-.sidebarContainer {
-  width: $sidebarWidth;
-  position: fixed;
-  left: 0;
-  top: 0;
-  transition: all 0.3s ease;
-  z-index: 99;
-  background: $primaryDark;
-  height: 100vh;
-  &.sidebarContainerCollapse {
-    width: 90px;
-  }
-}
-
-.mainBodyContainer {
+.main-body-container {
   flex-grow: 1;
   padding: 1rem;
-  margin-left: $sidebarWidth;
+  margin-left: 220px;
   transition: all 0.3s ease;
   position: relative;
+
   &.collapsedSidebar {
-    margin-left: 90px;
-  }
-}
-@media only screen and (min-width: 768px) {
-  .mainLayout {
-    padding-top: 52px;
-    display: flex;
-  }
-
-  .mainBody {
-    padding-bottom: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
+      margin-left: 90px;
   }
 }
 
-.publicHeader {
-  padding: 1rem 0;
+
+
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
-.publicFooter {
-  padding: 1rem 0;
+
+.header {
+  background-color: #222222;
+  color: #f2f2f2;
+}
+
+.headerContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin-right: 12px;
+  margin-left: 12px;
+}
+
+.headerTitleContainer {
+  display: flex;
+  align-items: center;
+  margin-right: 40px;
+  color: #f2f2f2;
+  text-decoration: none;
+}
+
+.headerLogo {
+  height: 40px;
+}
+
+.headerTitle {
+  margin-left: 12px;
+  font-weight: 600;
+}
+
+.headerNavList {
+  display: flex;
+  list-style: none;
+  padding-left: 0;
+}
+
+.headerNavPageLink {
+  color: #f2f2f2;
+  text-decoration: none;
+  opacity: 0.75;
+
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  transition-duration: 500ms;
+  transition-property: opacity;
+}
+
+.headerNavPageLink:hover {
+  opacity: 1;
+}
+
+.headerNavPageLinkActive {
+  color: #f2f2f2;
+  text-decoration: none;
+}
+
+.headerNavLeftMargin {
+  margin-left: 20px;
+}
+
+.headerRightText {
+  font-weight: normal;
+  margin-left: 40px;
+}
+
+.microsoftLogo {
+  height: 23px;
+  font-weight: 600;
+}
+
+.githubLogo {
+  height: 20px;
+}
+
+.toggle-theme-button {
+
   position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
+  right: 1rem;
+  top: 40px;
+}
+
+.main-body {}
+
+@media only screen and (min-width: 768px) {
+  .main-layout {
+      padding-top: 52px;
+      display: flex;
+  }
+
+  .main-body {
+      padding-bottom: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+  }
+
+  // .main-body-container {
+  //     border-top-left-radius: 8px;
+  // }
+
+}
+
+@media only screen and (max-width: 767px) {
+  .toggle-theme-button {
+      top: 78px;
+  }
+
+  .main-body-container {
+      margin-left: 0;
+      height: calc(100vh - 61px);
+      overflow-y: scroll;
+  }
+
+  .main-body {
+      height: 100%;
+  }
 }

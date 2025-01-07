@@ -1,124 +1,49 @@
+import { Grid } from "antd";
 
+import { useTheme } from "@/contexts/themeContext";
+import styles from "./Sidebar.module.scss";
+import MenuList from "../MenuList";
+import LOGO from "@/assets/images/logo_2_white.png";
+import { Scrollbars } from "rc-scrollbars";
 
-import BANK from "@/assets/images/bank.png";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAddressCard } from "@fortawesome/pro-light-svg-icons";
-import { Input, Typography, Button } from 'antd';
-import { faSearch } from "@fortawesome/pro-light-svg-icons";
-import { Swiper, SwiperSlide } from 'swiper/react';
-
-import 'swiper/css';
-import FAQ from "./FAQ";
-// import { Scrollbars } from "rc-scrollbars";
-
-// const { useBreakpoint } = Grid;
-
+const { useBreakpoint } = Grid;
 
 const Sidebar = () => {
+    const { sidebarCollapseState, toggleSidebarState } = useTheme();
+    const { md } = useBreakpoint();
+    console.log("md", md);
 
-  return (
-    <>
-      <div className='sidebar'>
-        <div className="sidebar-container">
-              <div className='faq-wrapper' style={{
-                padding:"2rem 0"
-              }}>
-                  <div style={{textAlign:"center"}}>
-                      <span className='faq-logo'>
-                          <img src={BANK} alt='' />
-                      </span>
-                      <Typography.Title level={4} style={{marginTop:"12px"}}>How can we help you?</Typography.Title>
-                      <div className="search-box">
-                        <span className="search-icon">
-                          <FontAwesomeIcon icon={faSearch} />
-                        </span>
-                        
-                        <Input placeholder="Descript your issue" className="search-input" />
-                      </div>
-                  </div>
-              </div>
-              <div className="faq-list"  style={{
-                padding:"0 1rem"
-              }}>
-                <FAQ />
-              </div>
+    const toggleCollapsed = () => {
+        toggleSidebarState();
+    };
 
-              <div className="sidebar-cards" style={{padding:"0 1rem"}}>
-                <Typography.Title level={4} style={{marginTop:"55px"}}>Sample Services</Typography.Title>
-
-                <div className="swiper-card-wrapper">
-                  <Swiper
-                  spaceBetween={10}
-                  slidesPerView="auto"
-                  onSlideChange={() => console.log('slide change')}
-                  onSwiper={(swiper) => console.log(swiper)}
-                >
-                    <SwiperSlide>
-
-                        <div className="card-col">
-                          <div className="card-color bg-primary-1">
-                              <div className="card-color-body">
-                                  <div className="card-icon-wrap">
-                                    <div className="card-icon">
-                                        <FontAwesomeIcon icon={faAddressCard} />
-                                    </div>
-                                  </div>
-                                  <div className="card-color-text">
-                                    <Typography.Title level={5} style={{color:"#fff", marginTop:"0"}}>Lorem Ipsum</Typography.Title>
-                                    <Typography.Title level={5} style={{color:"#fff", marginTop:"0.5rem", marginBottom:"1rem"}}> It is a long established fact that a reader will be distracted </Typography.Title>
-                                    <Button>Lorem</Button>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                    </SwiperSlide>
-                    <SwiperSlide>
-                      <div className="card-col">
-                        <div className="card-color  bg-success-1">
-                            <div className="card-color-body">
-                                <div className="card-icon-wrap">
-                                  <div className="card-icon">
-                                      <FontAwesomeIcon icon={faAddressCard} />
-                                  </div>
-                                </div>
-                                <div className="card-color-text">
-                                  <Typography.Title level={5} style={{color:"#fff", marginTop:"0"}}>Lorem Ipsum</Typography.Title>
-                                  <Typography.Title level={5} style={{color:"#fff", marginTop:"0.5rem", marginBottom:"1rem"}}> It is a long established fact that a reader will be distracted </Typography.Title>
-                                  <Button>Lorem</Button>
-                                </div>
-                            </div>
-                        </div>
-                      </div>
-                    </SwiperSlide>
-                    <SwiperSlide>
-                      <div className="card-col">
-                        <div className="card-color  bg-success-1">
-                            <div className="card-color-body">
-                                <div className="card-icon-wrap">
-                                  <div className="card-icon">
-                                      <FontAwesomeIcon icon={faAddressCard} />
-                                  </div>
-                                </div>
-                                <div className="card-color-text">
-                                  <Typography.Title level={5} style={{color:"#fff", marginTop:"0"}}>Lorem Ipsum</Typography.Title>
-                                  <Typography.Title level={5} style={{color:"#fff", marginTop:"0.5rem", marginBottom:"1rem"}}> It is a long established fact that a reader will be distracted </Typography.Title>
-                                  <Button>Lorem</Button>
-                                </div>
-                            </div>
-                        </div>
-                      </div>
-                    </SwiperSlide>
-                 </Swiper>
+    return (
+        <div  className={`sidebar-container ${styles["sidebar-container"]} ${sidebarCollapseState ? styles.sidebarContainerCollapse : ""}`}>
+            <div className="sidebar">
+                <div className={styles["logo-wrapper"]}>
+                    <img src={LOGO} alt="" />
+                    {/* <Tooltip title={sidebarCollapseState ? "Expand" : "Collapse"}>
+                        <Button
+                            onClick={toggleCollapsed}
+                            className={`${styles["menu-button"]} ${sidebarCollapseState ? styles.btnCollapse : ""}`}
+                            type="text"
+                            icon={<ArrowImportFilled />}
+                        />
+                    </Tooltip> */}
                 </div>
-              </div>
-
-              
+                <div className={styles["sidebar-body"]}>
+                    <Scrollbars autoHide style={{ maxHeight: "calc(100vh - 100px)" }}>
+                        <div style={{ width: "100%" }}>
+                            <MenuList />
+                            {/* <div style={{ padding: "1rem 20px" }}>
+                                <LoginButton />
+                            </div> */}
+                        </div>
+                        </Scrollbars>
+                </div>
             </div>
-
-
-      </div> 
-    </>
-  );
+        </div>
+    );
 };
 
 export default Sidebar;

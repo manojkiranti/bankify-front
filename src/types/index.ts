@@ -69,7 +69,8 @@ export type UserProfile = {
   tfn_number?: string;
 };
 
-export type ActionType = "debit_card_register" | "credit_card_register"
+export type ActionType = "debit_card_register" | "credit_card_register" | "repin_debit_card" | "debit_card_block" 
+| "debit_card_unblock" | "mobile_banking_register" | "mobile_banking_reset_pin" | "mobile_banking_block" | "mobile_banking_unblock"
 export interface CustomerRequestPayload<T> {
   action: ActionType;
   data: T;

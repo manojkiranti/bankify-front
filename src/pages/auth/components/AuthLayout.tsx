@@ -3,7 +3,7 @@ import { Row, Col } from 'antd';
 
 import { Container } from '@/components/Elements';
 
-import Logo from '@/assets/images/Logo_odin.png';
+import Logo from '@/assets/images/logo_2.png';
 import styles from '../styles/Login.module.scss';
 interface AuthLayoutProps {
   children: ReactNode;

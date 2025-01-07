@@ -1,42 +1,53 @@
-import { Row, Col, Flex } from 'antd';
-import { useMenu } from '@/contexts/menuContext';
+import { ChangeEvent, ChangeEventHandler, FC, useState } from "react";
+import { Button, Flex, Modal, Input, message, Drawer, Tooltip, theme } from "antd";
+import {  ThemeToggle } from "@/components/UI";
 
+import { useTheme } from "@/contexts/themeContext";
+import styles from "./Header.module.scss";
+import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
+import { ProfileDropdown } from "@/components/Elements";
 import { useAppSelector } from '@/hooks/hooks';
+const { TextArea } = Input;
+const { useToken } = theme;
 
-import HeaderNavigation from './HeaderNavigation';
-import { Container, ProfileDropdown } from '@/components/Elements';
-
-import styles from './Header.module.scss';
 
 const Header = () => {
-  const { activeTabs } = useMenu();
-  const { userData } = useAppSelector((state) => state.auth);
-  return (
-    <>
-      <header className={styles.headerContainer}>
-        <Container fullWidth={true}>
-          <Row gutter={30}>
-            <Col xs={24} md={12}>
-              <div className={styles.subMenuNavigation}>
-                {activeTabs && <HeaderNavigation tabItems={activeTabs} />}
-              </div>
-            </Col>
-            <Col xs={24} md={12}>
-              <Flex
-                justify="flex-end"
-                style={{ height: '100%' }}
-                align="center"
-              >
-                <div className={styles.headerMenuItem}>
-                  <ProfileDropdown userDetail={userData} />
-                </div>
-              </Flex>
-            </Col>
-          </Row>
-        </Container>
-      </header>
-    </>
-  );
+    const { sidebarCollapseState, toggleSidebarState } = useTheme();
+    const { userData } = useAppSelector((state) => state.auth);
+    const {token} =useToken();
+  
+    const [open, setOpen] = useState<boolean>(false);
+    const [messageApi, contextHolder] = message.useMessage();
+    const [feedback, setFeedback] = useState("");
+
+
+    const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+        setFeedback(e.target.value);
+    };
+
+    const toggleCollapsed = () => {
+        toggleSidebarState();
+    };
+    return (
+        <>
+            {contextHolder}
+                    
+                        <Button
+                            onClick={toggleCollapsed}
+                            className={`${styles["menu-button"]} ${sidebarCollapseState ? styles.btnCollapse : ""}`}
+                            type="text"
+                            style={{color:token.colorTextSecondary}}
+                            icon={sidebarCollapseState ? <MenuUnfoldOutlined style={{fontSize:"22px"}} />  : <MenuFoldOutlined style={{fontSize:"22px"}}/>}
+                        />
+                    
+     
+            <Flex justify="flex-end" align="center" gap={10} className={`header ${styles.header}`}>
+               
+                <ThemeToggle />
+                <ProfileDropdown userDetail={userData} />
+            </Flex>
+        </>
+    );
 };
 
 export default Header;

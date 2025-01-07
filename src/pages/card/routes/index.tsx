@@ -4,9 +4,11 @@ import NewCreditCard from './NewCreditCard';
 import RepinDebitCard from './RepinDebitCard';
 import CardBlock from './DebitCardBlock';
 import DebitCardUnBlock from './DebitCardUnblock';
+import CardRequest from './CardRequest';
 export const CardRoutes = () => {
   return (
     <Routes>
+       <Route path="" element={<CardRequest />} />
       <Route path="new-debit-card" element={<NewDebitCard />} />
       <Route path="new-credit-card" element={<NewCreditCard />} />
       <Route path="repin-request" element={<RepinDebitCard />} />

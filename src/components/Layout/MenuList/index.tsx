@@ -1,90 +1,125 @@
-import { FC, useEffect, useState } from 'react';
-import { Menu } from 'antd';
-import type { MenuProps } from 'antd';
-import { MENU_ITEMS } from '@/devFrontData/menu';
-import { manageMenuList } from '@/utils/menuUtils';
-import { useLocation } from 'react-router-dom';
+import { FC, useEffect, useMemo, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { Menu } from "antd";
+import type { MenuProps } from "antd";
+import { FormOutlined, GlobalOutlined, OpenAIOutlined, FileTextOutlined, FolderOutlined, UserOutlined, 
+    FileDoneOutlined, AppstoreOutlined, MobileOutlined, CreditCardOutlined, CustomerServiceOutlined } from "@ant-design/icons";
+import { MENU_ITEMS } from "@/devFrontData/menu";
+import { useTheme } from "@/contexts/themeContext";
+import { MenuType } from "@/types";
+
+const ICON_WRAPPER: { [key: string]: JSX.Element } = {
+    search: <OpenAIOutlined />,
+    zoom: <GlobalOutlined />,
+    document: <FileTextOutlined />,
+    form: <FormOutlined />,
+    folder: <FolderOutlined />,
+    user: <UserOutlined />,
+    fileDoneOutlined: <FileDoneOutlined />,
+    dashboard: <AppstoreOutlined />,
+    mobile: <MobileOutlined />,
+    card: <CreditCardOutlined />,
+    customerService: <CustomerServiceOutlined />,
+};
 
 interface MenuListProps {
-  onSelect?: () => void;
+    onSelect?: () => void;
 }
 
-const MenuList: FC<MenuListProps> = () => {
-  const location = useLocation();
-  const defaultOpenKeys = ['3', '4'];
-  const [openKeys, setOpenKeys] = useState<string[]>(defaultOpenKeys);
-  const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
-
-  const findMenuKeyByPath = (path: string, items: any[]): string | null => {
+const findMenuItem = (items: MenuType[], key: string): MenuType | null => {
     for (const item of items) {
-      if (item.link === path) {
-        return item.key;
-      }
-      if (item.children) {
-        const childKey = findMenuKeyByPath(path, item.children);
-        if (childKey) return childKey;
-      }
+        if (item.key === key) {
+            return item; // If key matches, return the item immediately
+        } else if (item.children) {
+            const found = findMenuItem(item.children, key);
+            if (found) return found; // If found in children, return the found item
+        }
     }
     return null;
-  };
+};
 
-  const findParentKeys = (currentKey: string, items: any[]): string[] => {
-    const parentKeys: string[] = [];
-
-    const findParent = (items: any[], targetKey: string) => {
-      for (const item of items) {
-        if (item.children) {
-          if (item.children.some((child: any) => child.key === targetKey)) {
-            parentKeys.push(item.key);
-          }
-          findParent(item.children, targetKey);
+const findMenuItemByPath = (items: MenuType[], path: string): MenuType | null => {
+    for (const item of items) {
+        if (item.link === path) {
+            return item;
+        } else if (item.children) {
+            const found = findMenuItemByPath(item.children, path);
+            if (found) return found;
         }
-      }
+    }
+    return null;
+};
+
+const MenuList: FC<MenuListProps> = ({ onSelect }) => {
+    const { sidebarCollapseState } = useTheme();
+    const location = useLocation();
+    const navigate = useNavigate();
+    const defaultOpenKeys = ["5", "6"];
+
+    const findActiveKey = () => {
+        const currentRoute = location.pathname;
+        const matchedItem = findMenuItemByPath(MENU_ITEMS, currentRoute);
+        return matchedItem ? matchedItem.key : "100";
     };
 
-    findParent(items, currentKey);
-    return parentKeys;
-  };
+    const [openKeys, setOpenKeys] = useState<string[]>(defaultOpenKeys);
+    const [current, setCurrent] = useState<string>(findActiveKey());
 
-  useEffect(() => {
-    const currentPath = location.pathname;
-    const menuKey = findMenuKeyByPath(currentPath, MENU_ITEMS);
+    useEffect(() => {
+        const activeKey = findActiveKey();
+        setCurrent(activeKey);
 
-    if (menuKey) {
-      setSelectedKeys([menuKey]);
+        const openItemKeys = MENU_ITEMS.filter(item => item.children?.some(child => child.key === activeKey)).map(item => item.key);
+        setOpenKeys(prevOpenKeys => [...new Set([...prevOpenKeys, ...openItemKeys])]);
+    }, [location.pathname]);
 
-      const parentKeys = findParentKeys(menuKey, MENU_ITEMS);
-      if (parentKeys.length > 0) {
-        setOpenKeys((prevKeys) => {
-          const newKeys = new Set([...prevKeys, ...parentKeys]);
-          return Array.from(newKeys);
-        });
-      }
-    }
-  }, [location.pathname]);
+    const items: MenuProps["items"] = useMemo(() => {
+        const mapItems = (items: MenuType[]): MenuProps["items"] =>
+            items.map(item => {
+                const icon = item.icon ? ICON_WRAPPER[item.icon] : undefined;
+                return {
+                    key: item.key,
+                    label: item.label,
+                    icon,
+                    children: item.children ? mapItems(item.children) : undefined
+                };
+            });
 
-  const handleMenuClick: MenuProps['onClick'] = (e) => {
-    setSelectedKeys([e.key]);
-  };
+        return mapItems(MENU_ITEMS);
+    }, []);
 
-  const onOpenChange: MenuProps['onOpenChange'] = (keys) => {
-    setOpenKeys(keys as string[]);
-  };
+    const handleMenuClick: MenuProps["onClick"] = e => {
+        const key = e.key.toString();
+        setCurrent(key);
+        console.log("Clicked key:", key);
 
-  const updatedItems = manageMenuList(MENU_ITEMS);
+        const item = findMenuItem(MENU_ITEMS, key);
+        console.log("Navigated item:", item);
 
-  return (
-    <Menu
-      selectedKeys={selectedKeys}
-      onClick={handleMenuClick}
-      openKeys={openKeys}
-      onOpenChange={onOpenChange}
-      mode="inline"
-      style={{ background: 'none', border: 'none' }}
-      items={updatedItems}
-      theme="dark"
-    />
-  );
+        if (item && item.link) {
+            navigate(item.link);
+            if (onSelect) {
+                onSelect();
+            }
+        }
+    };
+
+    const onOpenChange: MenuProps["onOpenChange"] = keys => {
+        setOpenKeys(keys as string[]);
+    };
+
+    return (
+        <Menu
+            selectedKeys={[current]}
+            openKeys={openKeys}
+            onOpenChange={onOpenChange}
+            onClick={handleMenuClick}
+            mode="inline"
+            inlineCollapsed={sidebarCollapseState}
+            style={{ background: "none", border: "none" }}
+            items={items}
+        />
+    );
 };
 
 export default MenuList;

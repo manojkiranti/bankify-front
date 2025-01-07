@@ -1,167 +1,115 @@
+import { useFetchServiceListQuery } from "@/store/apis/coreApi";
+import { Alert, Spin, Table } from "antd";
+import { ColumnsType } from 'antd/es/table';
 
-import { useState } from "react";
-import ReCAPTCHA from "react-google-recaptcha";
-import { useForm } from "react-hook-form";
-import dayjs from 'dayjs';
-import { yupResolver } from "@hookform/resolvers/yup";
-import { Container } from "@/components/Elements";
-import { Button, Col, Row, message, Breadcrumb, Card, Dropdown, Space } from "antd";
-import {  BalanceCertificateFormType, LockerRequestFormType } from "../types";
-import {  balanceCertificateSchema, lockerFormSchema } from "../schema";
-import { DatePickerField, InputField, RadioGroupField, SelectField } from "@/components/Form";
+interface ServiceRequest {
+  id: number; // Assuming each result has a unique 'id'
+  account_number: string;
+  status: string;
+  created_at: string;
+  // Add other fields based on your actual data structure
+}
 
-import { DownOutlined, HomeOutlined } from "@ant-design/icons";
-import { useCustomerServiceRequestMutation } from "@/store/apis/coreApi";
-import { displayError } from "@/utils/displayMessageUtils";
-import { customerSericesMenu } from "../constant";
-import { BRANCH_LIST } from "@/constant/options";
-import { currencies } from "@/utils/currenciesUtils";
-import { Link } from "react-router-dom";
+// 2. Define the columns for the Ant Design Table
+const columns: ColumnsType<ServiceRequest> = [
+  // {
+  //   title: 'ID',
+  //   dataIndex: 'id',
+  //   key: 'id',
 
-const siteKey = import.meta.env.VITE_CAPTCHA_SITE_KEY;
+  // },
+  {
+    title: 'Account Number',
+    dataIndex: 'account_number',
+    key: 'account_number'
+  },
+  {
+    title: 'Account Name',
+    dataIndex:["data","account_name"],
+    key: 'account_name'
+  },
+  {
+    title: 'Email',
+    dataIndex: ["data","email"],
+    key: 'email'
+  },
+  {
+    title: 'Mobile Number',
+    dataIndex: ["data","mobile_number"],
+    key: 'mobile_number'
+  },
+  {
+    title: 'Branch',
+    dataIndex: ["data","branch"],
+    key: 'branch'
+  },
 
-const LockerRequest = () => {
-    const [messageApi, contextHolder] = message.useMessage();
-    const [captchaValue, setCaptchaValue] = useState<string | null>(null);
-    const [postCustomerRequest, {isLoading}] = useCustomerServiceRequestMutation();
-      
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<LockerRequestFormType>({
-    defaultValues: {
-        
-    },
-    resolver: yupResolver(lockerFormSchema),
+  {
+    title: 'Status',
+    dataIndex: 'status',
+    key: 'status',
+    filters: [
+      { text: 'Active', value: 'active' },
+      { text: 'Inactive', value: 'inactive' },
+      // Add more filters as needed
+    ],
+
+  },
+  {
+    title: 'Requested At',
+    dataIndex: 'created_at',
+    key: 'created_at',
+    render: (date: string) => new Date(date).toLocaleDateString(),
+  },
+  // Add more columns as needed
+];
+const LockerRequest: React.FC = () => {
+  // 3. Fetch data using RTK Query
+  const { data, isLoading, isError, error } = useFetchServiceListQuery({
+    service_name: "customer_service",
+    action_name: "locker_request",
   });
 
-  const handleCaptchaChange = (value: string | null) => {
-    setCaptchaValue(value);
-  };
+  // Extract the results array or set it to an empty array if data is undefined
+  const tableData: ServiceRequest[] = data?.results || [];
 
-  const onSubmit = (data: LockerRequestFormType) => {
-    if (!captchaValue) {
-        messageApi.error("Please complete the reCAPTCHA to submit the form.")
-        return;
-      }
-    
-  };
+  // Handle loading state
+  if (isLoading) {
+    return (
+      <div style={{ textAlign: 'center', padding: '50px' }}>
+        <Spin size="large" />
+      </div>
+    );
+  }
+
+  // Handle error state
+  if (isError) {
+    return (
+      <Alert
+        message="Error"
+        description={error?.toString() || "An error occurred while fetching data."}
+        type="error"
+        showIcon
+      />
+    );
+  }
 
   return (
-    <>
-    {contextHolder}
-
-    <Container width="sm">
-
-      <Row>
-        <Col xs={24} style={{marginBottom:"2rem"}}>
-        
-
-          <Breadcrumb>
-            <Breadcrumb.Item>
-              <Link to="/">
-                <HomeOutlined />
-              </Link>
-             </Breadcrumb.Item>
-
-             <Breadcrumb.Item>
-                <Dropdown menu={{items:customerSericesMenu}}>
-                  <a href="#" onClick={e => e.preventDefault()}>
-                    <Space>
-                        Customer Services
-                       <DownOutlined />
-                    </Space>
-                  </a>
-                </Dropdown>
-             </Breadcrumb.Item>
-
-             <Breadcrumb.Item>
-                Locker Request
-            </Breadcrumb.Item>
-          </Breadcrumb>
-        
-        </Col>
-      </Row>
-      <Row>
-        <Col xs={24}>
-         <Card title="Locker Request">
-             <form onSubmit={handleSubmit(onSubmit)}>
-                <Row gutter={30}>
-                  
-                  <Col xs={24} md={8}>
-                    <InputField
-                      label="Account Number"
-                      name="accountNumber"
-                      control={control}
-                      error={errors.accountNumber?.message ?? ""}
-                      placeholder="Enter your registered account number"
-                      size="large"
-                      required={true}
-                    />
-                  </Col>
-                  <Col xs={24} md={8}>
-                    <InputField
-                      label="Account Name"
-                      name="accountName"
-                      control={control}
-                      error={errors.accountName?.message ?? ""}
-                      placeholder="Enter your name"
-                      size="large"
-                      required={true}
-                    />
-                  </Col>
-                  <Col xs={24} md={8}>
-                    <InputField
-                      label="Mobile Number"
-                      name="mobileNumber"            
-                      control={control}
-                      error={errors.mobileNumber?.message ?? ""}
-                      placeholder="Enter your mobile number"
-                      size="large"
-                      required={true}
-                    />
-                  </Col>
-                  
-                  <Col xs={24} md={8}>
-                    <SelectField
-                      options={BRANCH_LIST}
-                      label="Branch"
-                      name="branch"
-                      control={control}
-                      error={errors.branch?.message ?? ""}
-                      placeholder="Branch"
-                      size="large"
-                      required={true}
-                      showSearch={true}
-                      fieldNames={{
-                        label: "branchName",
-                        value: "id"
-                      }}
-                    />
-                  </Col>
-
-            
-                  
-                 
-                  <Col xs={24}>
-                    <ReCAPTCHA sitekey={siteKey} onChange={handleCaptchaChange} />
-                  </Col>
-                  
-                </Row>
-                <Col xs={24} style={{marginTop:"1rem"}}>
-                  <Button type="primary" htmlType="submit" size="large" loading={isLoading} disabled={isLoading}>
-                    Submit
-                  </Button>
-                </Col>
-              </form>
-         </Card>
-             
-          
-        </Col>
-      </Row>
-    </Container>
-    </>
+    <div>
+      {/* <Typography.Title level={4}>New Mobank Registration</Typography.Title> */}
+      <Table
+        columns={columns}
+        dataSource={tableData}
+        rowKey="id" // Ensure each row has a unique key
+        bordered
+        pagination={{
+          pageSize: 10, // Adjust page size as needed
+          total: data?.count, // Total number of records
+          showSizeChanger: false, // Hide page size changer if not needed
+        }}
+        // Optional: Add more table props like onChange for sorting/filtering
+      />
+    </div>
   );
 };
 

@@ -126,20 +126,20 @@ const Login = () => {
               Kindly fill in the information to continue.
             </Typography.Paragraph>
           </div>
-          <div className={styles.googleButtonContainerStyles}>
+          {/* <div className={styles.googleButtonContainerStyles}>
             <GoogleLoginButton
               handleButtonClick={handleLoginWithGoogle}
               isLoading={isGoogleAuthUrlLoading}
               isError={isGoogleAuthUrlError}
             />
-          </div>
-          <Divider
+          </div> */}
+          {/* <Divider
             style={{
               color: 'grey',
             }}
           >
             or
-          </Divider>
+          </Divider> */}
           <LoginForm />
         </div>
         <div className={styles.regsiterLink}>

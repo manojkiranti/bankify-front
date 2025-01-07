@@ -3,11 +3,13 @@ import NewMobankRegistration from './NewMobankRegistration';
 import MobankResetPin from './MobankResetPin';
 import MobankBlock from './MobankBlock';
 import MobankUnBlock from './MobankUnblock';
+import MobankRequest from './MobankReques';
 
 
 export const MobankRoutes = () => {
     return (
       <Routes>
+        <Route path="" element={<MobankRequest />} />
         <Route path="new-registration" element={<NewMobankRegistration />} />
         <Route path="reset-pin" element={<MobankResetPin />} />
         <Route path="deactivate" element={<MobankBlock />} />
