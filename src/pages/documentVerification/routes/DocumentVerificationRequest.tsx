@@ -2,7 +2,7 @@ import React from 'react';
 import { Tabs } from 'antd';
 import type { TabsProps } from 'antd';
 
-import PersonalLoan from './PersonalLoan';
+
 import BankGuranteeVerification from './BankGuranteeVerification';
 
 const onChange = (key: string) => {
