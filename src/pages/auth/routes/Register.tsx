@@ -43,7 +43,7 @@ const Register = () => {
           .then((response) => {
             dispatch(
               setAuthToken({
-                token: response.data.access_token,
+                token: response.data.token,
                 refreshToken: response.data.refresh_token,
               }),
             );

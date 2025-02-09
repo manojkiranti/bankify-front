@@ -81,7 +81,7 @@ const PersonalLoan: React.FC<PersonalLoanProps> = ({ loanType }) => {
   // 3. Fetch data using RTK Query
   const { data, isLoading, isError, error } = useFetchServiceListQuery({
     service_name: "loan_service",
-    action_name: loanType,
+    // action_name: loanType,
   });
 
   // Extract the results array or set it to an empty array if data is undefined

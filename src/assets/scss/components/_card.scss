@@ -53,3 +53,52 @@
     //     }
     // }
 }
+.card-icon-wrap{
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  .card-icon{
+    width: 1.75rem;
+    height: 1.75rem;
+    color: $white;
+    border-radius: 0.5rem;
+    font-size: 1.1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+.icon-bg-primary{
+  border: 1px solid rgba(0, 85, 166, 0.3);
+  background-color: rgba(0, 85, 166, 0.15);
+  
+  .card-icon{
+    background-color: $primary;
+  }
+  
+}
+.icon-bg-secondary{
+  border: 1px solid rgba(215,124,247, 0.3);
+  background-color: rgba(215, 124, 247, 0.15);
+  .card-icon{
+    background-color: rgba(215, 124, 247, 1);
+  }
+}
+.icon-bg-success{
+  border: 1px solid rgba(12,215,177, 0.3);
+  background-color: rgba(12,215,177, 0.15);
+  .card-icon{
+    background-color: rgba(12,215,177,1)
+  }
+}
+.icon-bg-orange{
+  border: 1px solid rgba(254,124,88, 0.3);
+  background-color: rgba(254,124,88, 0.15);
+  .card-icon{
+    background-color: rgba(254,124,88,1)
+  }
+}

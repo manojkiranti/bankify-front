@@ -38,7 +38,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
 
           <div className={`${styles["main-body-container"]} ${sidebarCollapseState ? styles.collapsedSidebar : ""}`}
                     style={{
-                        backgroundColor: theme === "dark" ? "rgb(28, 29, 32)" : "rgb(255, 255, 255)"
+                        backgroundColor: theme === "dark" ? "rgb(28, 29, 32)" : "rgb(248,248,250)"
                     }}>
             <div className={styles.mainBody}>{children}</div>
           </div>

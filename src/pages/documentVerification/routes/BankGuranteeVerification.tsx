@@ -53,7 +53,7 @@ const BankGuranteeVerification: React.FC = () => {
   // 3. Fetch data using RTK Query
   const { data, isLoading, isError, error } = useFetchServiceListQuery({
     service_name: "document_service",
-    action_name: "bank_gurantee_verification",
+    // action_name: "bank_gurantee_verification",
   });
 
   // Extract the results array or set it to an empty array if data is undefined
