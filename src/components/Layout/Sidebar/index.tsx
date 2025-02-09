@@ -3,7 +3,7 @@ import { Grid } from "antd";
 import { useTheme } from "@/contexts/themeContext";
 import styles from "./Sidebar.module.scss";
 import MenuList from "../MenuList";
-import LOGO from "@/assets/images/logo_2_white.png";
+import LOGO from "@/assets/images/genie_white.png";
 import { Scrollbars } from "rc-scrollbars";
 
 const { useBreakpoint } = Grid;
