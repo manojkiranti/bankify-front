@@ -51,16 +51,16 @@ export const coreAPI = createApi({
         }
       },
     }),
-    fetchServiceList: builder.query<any, { service_name?: string; action_name?: string; page?: number; page_size?: number }>({
-      query: ({ service_name, action_name, page, page_size }) => {
+    fetchServiceList: builder.query<any, { service_name?: string; request_type?: string; page?: number; page_size?: number }>({
+      query: ({ service_name, request_type, page, page_size }) => {
         // Construct the query parameters dynamically based on provided arguments
         const params: Record<string, any> = {};
     
         if (service_name) {
           params.service_name = service_name;
         }
-        if (action_name) {
-          params.action_name = action_name;
+        if (request_type) {
+          params.request_type = request_type;
         }
         if (page) {
           params.page = page;
@@ -70,9 +70,18 @@ export const coreAPI = createApi({
         }
     
         return {
-          url: '/api/service/service-requests/',
+          url: '/api/admin/all-service-request',
           params,
         };
+      },
+    }),
+    approveRequest: builder.mutation<ApiResponse<{id: string, message: string}>, {id:number,}>({
+      query: (body) => {
+        return{
+          url: `api/admin/request/approve/${body.id}`,
+          method: 'POST',
+          body: body
+        }
       },
     }),
   }),
@@ -84,5 +93,6 @@ export const {
   useFetchImageURLQuery,
   useCustomerServiceRequestMutation,
   useServiceOtpVerifyMutation,
-  useFetchServiceListQuery
+  useFetchServiceListQuery,
+  useApproveRequestMutation
 } = coreAPI;

@@ -1,5 +1,6 @@
-import { useFetchServiceListQuery } from "@/store/apis/coreApi";
-import { Alert, Spin, Table } from "antd";
+import { useApproveRequestMutation, useFetchServiceListQuery } from "@/store/apis/coreApi";
+import { displayError, displaySuccess } from "@/utils/displayMessageUtils";
+import { Alert, Button, Spin, Table } from "antd";
 import { ColumnsType } from 'antd/es/table';
 
 interface ServiceRequest {
@@ -10,77 +11,84 @@ interface ServiceRequest {
   // Add other fields based on your actual data structure
 }
 
-// 2. Define the columns for the Ant Design Table
-const columns: ColumnsType<ServiceRequest> = [
-  // {
-  //   title: 'ID',
-  //   dataIndex: 'id',
-  //   key: 'id',
 
-  // },
-  {
-    title: 'Account Number',
-    dataIndex: 'account_number',
-    key: 'account_number'
-  },
-  {
-    title: 'Account Name',
-    dataIndex:["data","account_name"],
-    key: 'account_name'
-  },
-  {
-    title: 'Email',
-    dataIndex: ["data","email"],
-    key: 'email'
-  },
-  {
-    title: 'Mobile Number',
-    dataIndex: ["data","mobile_number"],
-    key: 'mobile_number'
-  },
-  {
-    title: 'Branch',
-    dataIndex: ["data","branch"],
-    key: 'branch'
-  },
-  {
-    title: 'Currency',
-    dataIndex: ["data","currency"],
-    key: 'currency'
-  },
-  {
-    title: 'Date',
-    dataIndex: ["data","date"],
-    key: 'date'
-  },
-  {
-    title: 'Status',
-    dataIndex: 'status',
-    key: 'status',
-    filters: [
-      { text: 'Active', value: 'active' },
-      { text: 'Inactive', value: 'inactive' },
-      // Add more filters as needed
-    ],
 
-  },
-  {
-    title: 'Requested At',
-    dataIndex: 'created_at',
-    key: 'created_at',
-    render: (date: string) => new Date(date).toLocaleDateString(),
-  },
-  // Add more columns as needed
-];
 const BalanceCertificate: React.FC = () => {
-  // 3. Fetch data using RTK Query
-  const { data, isLoading, isError, error } = useFetchServiceListQuery({
-    service_name: "customer_service",
-    action_name: "balance_certificate",
+  
+  const columns: ColumnsType<ServiceRequest> = [
+    // {
+    //   title: 'ID',
+    //   dataIndex: 'id',
+    //   key: 'id',
+  
+    // },
+    {
+      title: 'Account Number',
+      dataIndex: 'account_number',
+      key: 'account_number'
+    },
+    {
+      title: 'Account Name',
+      dataIndex:"account_name",
+      key: 'account_name'
+    },
+    {
+      title: 'Email',
+      dataIndex: "email",
+      key: 'email'
+    },
+    {
+      title: 'Mobile Number',
+      dataIndex:"phone",
+      key: 'phone'
+    },
+    {
+      title: 'Request channel',
+      dataIndex: ["request_body","channel"],
+      key: 'channel'
+    },
+    {
+      title: 'Status',
+      dataIndex: 'status',
+      key: 'status',
+      filters: [
+        { text: 'Initiated', value: 'INITIATED' },
+        { text: 'Submitted', value: 'SUBMITTED' },
+        { text: 'Completed', value: 'COMPLETED' },
+      ],
+  
+    },
+    
+    {
+      title: 'Requested At',
+      dataIndex: 'created_at',
+      key: 'created_at',
+      render: (date: string) => new Date(date).toLocaleDateString(),
+    },
+    {
+      title: 'Action',
+      dataIndex: '',
+      key: 'x',
+      render: (value) => {
+        if( value.status === 'SUBMITTED') {
+          return <Button type="primary" onClick={() => handleServiceApprove(value.id)} disabled={approveRequestLoading} loading={approveRequestLoading}>Approve</Button>
+        } else {
+          return <a>View</a>
+        }
+        
+      },
+    },
+    // Add more columns as needed
+  ];
+
+  const { data: serviceResponse, isLoading, isError, error, refetch } = useFetchServiceListQuery({
+    // service_name: "MOBILE_BANKING",
+    request_type: "BALANCE_CERTIFICATE",
   });
+  const [approveRequest, {isLoading: approveRequestLoading }] = useApproveRequestMutation();
 
   // Extract the results array or set it to an empty array if data is undefined
-  const tableData: ServiceRequest[] = data?.results || [];
+  const tableData: ServiceRequest[] = serviceResponse?.data?.data || [];
 
   // Handle loading state
   if (isLoading) {
@@ -102,7 +110,16 @@ const BalanceCertificate: React.FC = () => {
       />
     );
   }
+  const handleServiceApprove = (id:number) => {
 
+    approveRequest({id}).unwrap()
+    .then((res) => {
+      displaySuccess(res.message)
+      refetch();
+    }).catch((err) => {
+      displayError(err.message)
+    });
+  }
   return (
     <div>
       {/* <Typography.Title level={4}>New Mobank Registration</Typography.Title> */}
@@ -113,7 +130,7 @@ const BalanceCertificate: React.FC = () => {
         bordered
         pagination={{
           pageSize: 10, // Adjust page size as needed
-          total: data?.count, // Total number of records
+          total: serviceResponse?.data.total, // Total number of records
           showSizeChanger: false, // Hide page size changer if not needed
         }}
         // Optional: Add more table props like onChange for sorting/filtering

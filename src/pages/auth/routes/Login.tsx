@@ -65,14 +65,14 @@ const Login = () => {
             } else {
               dispatch(
                 setAuthToken({
-                  token: response.data.access_token,
+                  token: response.data.token,
                   refreshToken: response.data.refresh_token,
                 }),
               );
               dispatch(
                 setUserDetails({
-                  email: response.data.email,
-                  name: response.data.name,
+                  email: response.data.user.email,
+                  name: response.data.user.name,
                 }),
               );
               if (response.data.message) {

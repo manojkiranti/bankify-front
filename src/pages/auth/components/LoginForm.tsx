@@ -70,12 +70,12 @@ const LoginForm = () => {
       } else {
         dispatch(
           setAuthToken({
-            token: result.data.access_token,
-            refreshToken: result.data.refresh_token,
+            token: result.data.token,
+            refreshToken: result.data.token,
           }),
         );
         dispatch(
-          setUserDetails({ email: result.data.email, name: result.data.name }),
+          setUserDetails({ email: result.data.user.email, name: result.data.user.name }),
         );
         navigate(from, { replace: true });
       }

@@ -5,8 +5,14 @@ import { SetPasswordPayload } from '@/pages/auth/types';
 interface VerifyTokenRequest {
   code: string;
 }
+
+interface AdminUser {
+  id: number;
+  name: string;
+  email: string;
+}
 interface AuthLoginResponse {
-  access_token: string;
+  token: string;
   email: string;
   is_active: boolean;
   is_admin: boolean;
@@ -16,6 +22,7 @@ interface AuthLoginResponse {
   is_2fa_enabled: boolean;
   two_factor_required: boolean;
   temp_token?: string;
+  user: AdminUser
 }
 
 interface GoogleAuthLinkResponse {
@@ -71,7 +78,7 @@ export const authApi = createApi({
     }),
     userLogin: builder.mutation<ApiResponse<AuthLoginResponse>, LoginRequest>({
       query: (body) => ({
-        url: 'api/auth/login',
+        url: 'api/login',
         method: 'POST',
         body,
       }),
