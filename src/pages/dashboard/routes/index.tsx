@@ -7,7 +7,7 @@ export const DashboardRoutes = () => {
     <ContainerWrapper>
       <Routes>
         <Route path="" element={<Dashbaord />} />
-        <Route path="*" element={<Navigate to="." />} />
+        <Route path="*" element={<Navigate to="/dashboard" />} />
       </Routes>
     </ContainerWrapper>
   );

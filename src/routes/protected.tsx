@@ -78,7 +78,7 @@ export const protectedRoutes = [
           { path: 'loans/*', element: <LoanRoutes /> },
           { path: 'document-service/*', element: <DocumentVerificationRoutes /> },
           { path: 'profile', element: <ProfilePage /> },
-          { path: '*', element: <Navigate to="." /> },
+          { path: '*', element: <Navigate to="/dashboard" /> },
         ],
       },
     ],
