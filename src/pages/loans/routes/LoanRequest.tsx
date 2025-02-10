@@ -12,23 +12,23 @@ const items: TabsProps['items'] = [
   {
     key: '1',
     label: 'Home Loan',
-    children: <PersonalLoan loanType='home_loan' />,
+    children: <PersonalLoan loanType='HOME_LOAN' />,
   },
   {
     key: '2',
     label: 'Gold Loan',
-    children: <PersonalLoan loanType='gold_loan'/>,
+    children: <PersonalLoan loanType='GOLD_LOAN'/>,
   },
   {
     key: '3',
     label: 'Loan Against Share',
-    children: <PersonalLoan loanType='loan_against_share'/>,
+    children: <PersonalLoan loanType='LOAN_AGAINST_SHARE'/>,
   },
-  {
-    key: '4',
-    label: 'Credit Card Loan',
-    children: <PersonalLoan loanType='credit_card_loan'/>,
-  }
+  // {
+  //   key: '4',
+  //   label: 'Credit Card Loan',
+  //   children: <PersonalLoan loanType='credit_card_loan'/>,
+  // }
 ];
 
 const LoanRequest: React.FC = () => <Tabs defaultActiveKey="1" items={items} onChange={onChange} />;

@@ -26,12 +26,12 @@ export const loanMenu:MenuProps['items'] = [
           </Link>
         ),
       },
-      {
-        key: '4',
-        label: (
-          <Link to="/loan/credit-card">
-            Credit Card
-          </Link>
-        ),
-      }
+      // {
+      //   key: '4',
+      //   label: (
+      //     <Link to="/loan/credit-card">
+      //       Credit Card
+      //     </Link>
+      //   ),
+      // }
   ];
